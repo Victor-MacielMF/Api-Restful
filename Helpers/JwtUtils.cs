@@ -18,5 +18,14 @@ namespace api.Helpers
             }
             return new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
         }
+
+        public static SymmetricSecurityKey GetSymmetricSecurityKey(string secretKey)
+        {
+            if (string.IsNullOrEmpty(secretKey))
+            {
+                throw new ArgumentException("Secret key cannot be null or empty.", nameof(secretKey));
+            }
+            return new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
+        }
     }
 }

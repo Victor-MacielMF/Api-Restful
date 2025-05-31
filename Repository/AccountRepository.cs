@@ -12,11 +12,9 @@ namespace api.Repository
     public class AccountRepository : IAccountRepository
     {
         private readonly UserManager<Account> _userManager;
-        private readonly SignInManager<Account> _signInManager;
-        public AccountRepository(UserManager<Account> userManager, SignInManager<Account> signInManager)
+        public AccountRepository(UserManager<Account> userManager)
         {
             _userManager = userManager;
-            _signInManager = signInManager;
         }
         public async Task<IdentityResult> CreateAsync(Account account, string password)
         {
@@ -54,23 +52,6 @@ namespace api.Repository
                     return result;
                 }
             }
-        }
-
-        public async Task<Account?> FindByCredentialsAsync(string userName, string password)
-        {
-            if (string.IsNullOrEmpty(userName) || string.IsNullOrEmpty(password))
-            {
-                return null;
-            }
-
-            var user = await _userManager.FindByNameAsync(userName);
-            if (user == null)
-            {
-                return null;
-            }
-            var result = await _signInManager.CheckPasswordSignInAsync(user, password, false);
-
-            return result.Succeeded ? user : null;
         }
 
         public async Task<Account?> FindByUsernameAsync(string username)

@@ -6,8 +6,8 @@ using api.Models;
 
 namespace api.Interfaces
 {
-    public interface ITokenService
+    public interface ISessionRepository
     {
-        (string Token, DateTime ExpiresAt) GenerateToken(Account account);
+        Task<Account?> ValidateUserCredentialsAsync(string userName, string password);
     }
 }

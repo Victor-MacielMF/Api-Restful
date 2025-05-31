@@ -9,27 +9,24 @@ using api.Dtos.Account;
 using api.Helpers;
 using api.Interfaces;
 using api.Models;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
 namespace api.Services
 {
     public class TokenService : ITokenService
     {
-        private readonly IConfiguration _configuration;
+        private readonly JwtSettings _jwtSettings;
         private readonly SymmetricSecurityKey _signingKey;
-        public TokenService(IConfiguration configuration)
+
+        public TokenService(IOptions<JwtSettings> jwtOptions)
         {
-            _configuration = configuration;
-            _signingKey = JwtUtils.GetSymmetricSecurityKey(configuration);
+            _jwtSettings = jwtOptions.Value;
+            _signingKey = JwtUtils.GetSymmetricSecurityKey(_jwtSettings.SigningKey);
         }
 
-        public string GenerateToken(Account account)
+        public (string Token, DateTime ExpiresAt) GenerateToken(Account account)
         {
-            if (string.IsNullOrEmpty(account.Id))
-                throw new ArgumentException("User ID cannot be null or empty.", nameof(account.Id));
-            if (string.IsNullOrEmpty(account.UserName))
-                throw new ArgumentException("User name cannot be null or empty.", nameof(account.UserName));
-
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.NameIdentifier, account.Id),
@@ -38,15 +35,20 @@ namespace api.Services
             };
 
             var credentials = new SigningCredentials(_signingKey, SecurityAlgorithms.HmacSha256);
+            var expiresAt = DateTime.UtcNow.AddDays(_jwtSettings.TokenValidityDays);
+
             var token = new JwtSecurityToken(
-                issuer: _configuration["Jwt:Issuer"],
-                audience: _configuration["Jwt:Audience"],
+                issuer: _jwtSettings.Issuer,
+                audience: _jwtSettings.Audience,
                 claims: claims,
-                expires: DateTime.UtcNow.AddDays(7),
+                expires: expiresAt,
                 signingCredentials: credentials
             );
 
-            return new JwtSecurityTokenHandler().WriteToken(token);
+            var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
+
+            return (tokenString, expiresAt);
         }
+
     }
 }

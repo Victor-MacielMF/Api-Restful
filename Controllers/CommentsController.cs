@@ -18,12 +18,12 @@ namespace api.Controllers
 {
     [Route("api/v1/[controller]")]
     [ApiController]
-    public class CommentController : ControllerBase
+    public class CommentsController : ControllerBase
     {
         private readonly ICommentRepository _commentRepository;
         private readonly IStockRepository _stockRepository;
 
-        public CommentController(ICommentRepository commentRepository, IStockRepository stockRepository)
+        public CommentsController(ICommentRepository commentRepository, IStockRepository stockRepository)
         {
             _commentRepository = commentRepository;
             _stockRepository = stockRepository;

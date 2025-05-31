@@ -10,7 +10,6 @@ namespace api.Interfaces
     public interface IAccountRepository
     {
         Task<IdentityResult> CreateAsync(Account account, string password);
-        Task<Account?> FindByCredentialsAsync(string userName, string password);
         Task<Account?> FindByUsernameAsync(string username);
     }
 }

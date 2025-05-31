@@ -28,5 +28,15 @@ namespace api.Mappers
                 // Additional properties can be mapped here as needed
             };
         }
+
+        public static TokenDto ToAuthTokenDto(this string token,DateTime expiration)
+        {
+            return new TokenDto
+            {
+                Token = token,
+                ExpiresAt = expiration,
+            };
+        }
+
     }
 }

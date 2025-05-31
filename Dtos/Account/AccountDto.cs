@@ -8,6 +8,5 @@ namespace api.Dtos.Account
 {
     public class AccountDto : AccountBaseDto
     {
-        public string Token { get; set; } = string.Empty;
     }
 }

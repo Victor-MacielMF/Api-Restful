@@ -18,10 +18,10 @@ namespace api.Controllers
 
     [Route("api/v1/[controller]")]
     [ApiController]
-    public class StockController : ControllerBase
+    public class StocksController : ControllerBase
     {
         private readonly IStockRepository _stockRepository;
-        public StockController(IStockRepository stockRepository)
+        public StocksController(IStockRepository stockRepository)
         {
             _stockRepository = stockRepository;
         }

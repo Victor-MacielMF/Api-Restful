@@ -12,11 +12,11 @@ namespace api.Controllers
 {
     [ApiController]
     [Route("api/v1/[controller]")]
-    public class AccountStockController : ControllerBase
+    public class AccountStocksController : ControllerBase
     {
         private readonly IAccountRepository _accountRepository;
         private readonly IAccountStockRepository _accountStockRepository;
-        public AccountStockController(IAccountRepository accountRepository, IAccountStockRepository accountStockRepository)
+        public AccountStocksController(IAccountRepository accountRepository, IAccountStockRepository accountStockRepository)
         {
             _accountStockRepository = accountStockRepository;
             _accountRepository = accountRepository;

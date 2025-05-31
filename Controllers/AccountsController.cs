@@ -13,15 +13,12 @@ namespace api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AccountController : ControllerBase
+    public class AccountsController : ControllerBase
     {
         private readonly IAccountRepository _accountRepository;
-        private readonly ITokenService _tokenService;
-
-        public AccountController(IAccountRepository accountRepository, ITokenService tokenService)
+        public AccountsController(IAccountRepository accountRepository)
         {
             _accountRepository = accountRepository;
-            _tokenService = tokenService;
         }
 
         [HttpPost("register")]
@@ -43,7 +40,6 @@ namespace api.Controllers
                 if (result.Succeeded)
                 {
                     var accountDto = account.ToAccountDto();
-                    accountDto.Token = _tokenService.GenerateToken(account);
 
                     return Ok
                     (
@@ -56,36 +52,6 @@ namespace api.Controllers
                 }
 
                 return BadRequest(result.Errors);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Internal server error: {ex.Message}");
-            }
-        }
-
-        [HttpPost("login")]
-        [Produces("application/json")]
-        
-        public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
-        {
-            try
-            {
-                if (!ModelState.IsValid)
-                {
-                    return BadRequest(ModelState);
-                }
-
-                var account = await _accountRepository.FindByCredentialsAsync(loginDto.UserName, loginDto.Password);
-
-                if (account == null)
-                {
-                    return Unauthorized(new { Message = "Invalid username or password." });
-                }
-
-                var accountDto = account.ToAccountDto();
-                accountDto.Token = _tokenService.GenerateToken(account);
-
-                return Ok(accountDto);
             }
             catch (Exception ex)
             {
