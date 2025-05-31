@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "mWok3N2q6LM=",
+  "dgSpecHash": "SLV4ImmTnZg=",
   "success": true,
-  "projectFilePath": "C:\\Users\\macie\\OneDrive\\Documentos\\Projetos\\FinShark\\api\\api.csproj",
+  "projectFilePath": "C:\\Users\\macie\\OneDrive\\Documentos\\Github\\Api-Restful\\api.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\macie\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
     "C:\\Users\\macie\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.1\\automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",

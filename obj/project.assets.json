@@ -4694,11 +4694,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\macie\\OneDrive\\Documentos\\Projetos\\FinShark\\api\\api.csproj",
+      "projectUniqueName": "C:\\Users\\macie\\OneDrive\\Documentos\\Github\\Api-Restful\\api.csproj",
       "projectName": "api",
-      "projectPath": "C:\\Users\\macie\\OneDrive\\Documentos\\Projetos\\FinShark\\api\\api.csproj",
+      "projectPath": "C:\\Users\\macie\\OneDrive\\Documentos\\Github\\Api-Restful\\api.csproj",
       "packagesPath": "C:\\Users\\macie\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\macie\\OneDrive\\Documentos\\Projetos\\FinShark\\api\\obj\\",
+      "outputPath": "C:\\Users\\macie\\OneDrive\\Documentos\\Github\\Api-Restful\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
