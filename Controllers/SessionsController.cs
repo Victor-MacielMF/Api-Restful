@@ -1,14 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using api.Dtos.Account;
-using api.Helpers;
 using api.Interfaces;
 using api.Mappers;
-using api.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
 
 namespace api.Controllers
 {

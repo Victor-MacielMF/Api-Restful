@@ -1,7 +1,7 @@
 using api.Data;
 using api.Interfaces;
 using api.Models;
-using api.Repository;
+using api.Repositories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -9,7 +9,6 @@ using Microsoft.IdentityModel.Tokens;
 using api.Services;
 using Microsoft.OpenApi.Models;
 using api.Helpers;
-using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.

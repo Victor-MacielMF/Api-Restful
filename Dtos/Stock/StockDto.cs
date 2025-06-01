@@ -1,10 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using api.Dtos.Comment;
 using Newtonsoft.Json;
-using Swashbuckle.AspNetCore.Annotations;
 
 namespace api.Dtos.Stock
 {
