@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using api.Dtos.Comment;
 using api.Interfaces;
 using api.Mappers;
@@ -82,7 +83,14 @@ namespace api.Controllers
             }
 
             var createdComment = await _commentRepository.CreateAsync(comment);
-            return CreatedAtAction(nameof(GetById), new { id = createdComment.Id }, createdComment.ToCommentDto());
+            var userComment = await _commentRepository.GetByIdAsync(createdComment.Id);
+
+            if (userComment == null)
+            {
+                return NotFound($"Created comment with ID {createdComment.Id} not found.");
+            }
+            
+            return CreatedAtAction(nameof(GetById), new { id = createdComment.Id }, userComment.ToCommentDto());
 
         }
 
