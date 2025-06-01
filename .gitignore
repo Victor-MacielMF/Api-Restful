@@ -2,6 +2,7 @@
 bin/
 obj/
 out/
+.vs/
 
 # User-specific files
 *.user
