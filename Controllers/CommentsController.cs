@@ -133,11 +133,14 @@ namespace api.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Delete(int id)
         {
-            var comment = await _commentRepository.DeleteAsync(id);
-            if (comment == null)
+            var existingComment = await _commentRepository.GetByIdAsync(id);
+            if (existingComment == null)
             {
                 return NotFound($"Comment with ID {id} not found.");
             }
+
+            var comment = await _commentRepository.DeleteAsync(existingComment);
+
             return Ok(comment.ToCommentDto());
         }
     }

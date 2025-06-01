@@ -39,7 +39,7 @@ namespace api.Repositories
             var existingComment = await _dbContext.Comments.FirstOrDefaultAsync(c => c.Id == comment.Id);
             if (existingComment == null)
             {
-                return null;
+                throw new ArgumentException("Comment not found.", nameof(comment));
             }
 
             existingComment.Content = comment.Content;
@@ -50,14 +50,12 @@ namespace api.Repositories
             return existingComment;
         }
 
-        public async Task<Comment> DeleteAsync(int id)
+        public async Task<Comment> DeleteAsync(Comment comment)
         {
-            var comment = await _dbContext.Comments.FirstOrDefaultAsync(c => c.Id == id);
             if (comment == null)
             {
-                return null;
+                throw new ArgumentNullException(nameof(comment), "Comment cannot be null.");
             }
-
             _dbContext.Comments.Remove(comment);
             await _dbContext.SaveChangesAsync();
             return comment;
