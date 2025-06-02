@@ -24,6 +24,12 @@ namespace api.Data
                 new IdentityRole { Name = "Admin", NormalizedName = "ADMIN" },
                 new IdentityRole { Name = "User", NormalizedName = "USER" }
             };
+            modelBuilder.Entity<Comment>()
+                .HasOne(c => c.Stock)
+                .WithMany(s => s.Comments)
+                .HasForeignKey(c => c.StockId)
+                .OnDelete(DeleteBehavior.Cascade);
+
             modelBuilder.Entity<IdentityRole>().HasData(roles);
         }
     }

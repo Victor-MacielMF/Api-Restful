@@ -19,7 +19,7 @@ namespace api.Repositories
 
         public async Task<List<Stock>> GetAllAsync(QueryObject queryObject)
         {
-            var stocks = _dbContext.Stocks.Include(s => s.Comments).ThenInclude(a => a.Account).AsQueryable();
+            var stocks = _dbContext.Stocks.AsQueryable();
             if(!string.IsNullOrEmpty(queryObject.Symbol))
             {
                 stocks = stocks.Where(s => s.Symbol.Contains(queryObject.Symbol));

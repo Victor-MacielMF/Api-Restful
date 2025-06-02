@@ -49,6 +49,25 @@ namespace api.Mappers
             };
         }
 
+        public static StockWithoutCommentsDTO ToStockWithoutCommentsDto(this Stock stock)
+        {
+            if (stock == null)
+            {
+                return null;
+            }
+
+            return new StockWithoutCommentsDTO
+            {
+                Id = stock.Id,
+                Symbol = stock.Symbol,
+                CompanyName = stock.CompanyName,
+                Purchase = stock.Purchase,
+                LastDiv = stock.LastDiv,
+                Indutry = stock.Indutry,
+                MarketCap = stock.MarketCap
+            };
+        }
+
         public static Stock ToStockFromCreateDTO(this CreateStockRequestDto stockDto)
         {
             return new Stock
