@@ -26,8 +26,8 @@ namespace api.Controllers
         [HttpGet]
         [Produces("application/json")]
         [ProducesResponseType(typeof(DataResponse<IEnumerable<StockDto>>), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(MessageResponse), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(MessageResponse), StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(typeof(MessageResponse), StatusCodes.Status404NotFound)]
         [Authorize]
         public async Task<IActionResult> GetStocksByAccount()
         {
@@ -45,10 +45,10 @@ namespace api.Controllers
 
         [HttpPost("{stockId:int}")]
         [Produces("application/json")]
-        [ProducesResponseType(typeof(DataResponse<IEnumerable<StockDto>>), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(MessageResponse), StatusCodes.Status404NotFound)]
-        [ProducesResponseType(typeof(MessageResponse), StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(typeof(DataResponse<StockDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(MessageResponse), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(MessageResponse), StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(typeof(MessageResponse), StatusCodes.Status404NotFound)]
         [Authorize]
         public async Task<IActionResult> AddStockToAccount(int stockId)
         {
@@ -73,17 +73,17 @@ namespace api.Controllers
                     return BadRequest(new MessageResponse("Failed to retrieve the added stock."));
                 }
 
-                return Ok(new DataResponse<IEnumerable<StockDto>>("Stock added to account successfully.", [stockDto]));
+                return Ok(new DataResponse<StockDto>("Stock added to account successfully.", stockDto));
             }
             return BadRequest(new MessageResponse("Stock already exists in the account."));
         }
 
         [HttpDelete("{stockId:int}")]
         [Produces("application/json")]
-        [ProducesResponseType(typeof(DataResponse<IEnumerable<StockDto>>), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(MessageResponse), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(DataResponse<StockDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(MessageResponse), StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(MessageResponse), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(MessageResponse), StatusCodes.Status404NotFound)]
         [Authorize]
         public async Task<IActionResult> RemoveStockFromAccount(int stockId)
         {
@@ -97,7 +97,7 @@ namespace api.Controllers
             var removedStock = await _accountStockRepository.RemoveStockFromAccountAsync(account, stockId);
             if (removedStock != null)
             {
-                return Ok(new DataResponse<IEnumerable<StockDto>>("Stock removed from account successfully.", [removedStock.TostockDto(account.Id)]));
+                return Ok(new DataResponse<StockDto>("Stock removed from account successfully.", removedStock.TostockDto(account.Id)));
             }
             return BadRequest(new MessageResponse("Stock does not exist in the account."));
         }

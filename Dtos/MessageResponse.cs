@@ -1,8 +1,11 @@
+using System.Runtime.Intrinsics;
+using api.Controllers;
+
 namespace api.Dtos
 {
     public class MessageResponse
     {
-        public string Message { get; set; }
-        public MessageResponse(string message) => Message = message;
+        public string title { get; set; }
+        public MessageResponse(string message) => title = message;
     }
 }
