@@ -3,6 +3,7 @@ using api.Dtos.Stock;
 using api.Interfaces;
 using api.Mappers;
 using api.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace api.Repositories
@@ -10,9 +11,11 @@ namespace api.Repositories
     public class AccountStockRepository : IAccountStockRepository
     {
         private readonly ApplicationDBContext _context;
-        public AccountStockRepository(ApplicationDBContext applicationDBContext)
+        private readonly IStockRepository _stockRepository;
+        public AccountStockRepository(ApplicationDBContext applicationDBContext, IStockRepository stockRepository)
         {
             _context = applicationDBContext;
+            _stockRepository = stockRepository;
         }
 
 
@@ -22,29 +25,18 @@ namespace api.Repositories
             {
                 throw new ArgumentNullException(nameof(account), "Account cannot be null");
             }
-            var stocks = LoadStocksAsync(account).Result.Stocks;
-
-            return stocks.Select(s => s.TostockDto()).ToList();
-        }
-
-        public async Task<Account> LoadStocksAsync(Account account)
-        {
-            if (account == null)
-            {
-                throw new ArgumentNullException(nameof(account), "Account cannot be null");
-            }
-
+            //var stocks = (await LoadStocksAsync(account)).Stocks;
             var stocks = await _context.Stocks
                 .Where(s => s.Accounts.Any(a => a.Id == account.Id))
-                //.Include(s => s.Comments) // se quiser trazer comentários também
+                .Include(s => s.Comments)
+                    .ThenInclude(c => c.Account)
                 .ToListAsync();
-
             account.Stocks = stocks;
-            return account;
-            
+
+            return stocks.Select(s => s.TostockDto(account.Id)).ToList();
         }
 
-        public async Task<bool> AddStockToAccountAsync(Account account, int stockId)
+        public async Task<Stock> AddStockToAccountAsync(Account account, int stockId)
         {
             if (account == null)
                 throw new ArgumentNullException(nameof(account));
@@ -61,13 +53,13 @@ namespace api.Repositories
                 account = loadedAccount;
             }
 
-            var stock = await new StockRepository(_context).GetByIdAsync(stockId);
+            var stock = await _stockRepository.GetByIdAsync(stockId);
             if (stock == null)
                 throw new ArgumentException("Stock not found", nameof(stockId));
 
             // Verifica duplicidade
             if (account.Stocks.Any(s => s.Id == stockId))
-                return false;
+                return null;
 
             // Anexa stock, se necessário
             _context.Attach(stock);
@@ -76,10 +68,10 @@ namespace api.Repositories
             account.Stocks.Add(stock);
             await _context.SaveChangesAsync();
 
-            return true;
+            return stock;
         }
 
-        public async Task<bool> RemoveStockFromAccountAsync(Account account, int stock)
+        public async Task<Stock> RemoveStockFromAccountAsync(Account account, int stock)
         {
             if (account == null)
                 throw new ArgumentNullException(nameof(account));
@@ -96,15 +88,15 @@ namespace api.Repositories
                 account = loadedAccount;
             }
 
-            var stockToRemove = account.Stocks.FirstOrDefault(s => s.Id == stock);
+            var stockToRemove = await _stockRepository.GetByIdAsync(stock);
             if (stockToRemove == null)
-                return false;
+                return null;
 
             // Remove o stock e salva
             account.Stocks.Remove(stockToRemove);
             await _context.SaveChangesAsync();
 
-            return true;
+            return stockToRemove;
         }
     }
 }

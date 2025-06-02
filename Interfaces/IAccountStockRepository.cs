@@ -6,8 +6,7 @@ namespace api.Interfaces
     public interface IAccountStockRepository
     {
         Task<List<StockDto>> GetStocksDtoByAccountId(Account accountId);
-        Task<Account> LoadStocksAsync(Account account);
-        Task<bool> AddStockToAccountAsync(Account account, int stock);
-        Task<bool> RemoveStockFromAccountAsync(Account account, int stock);
+        Task<Stock> AddStockToAccountAsync(Account account, int stock);
+        Task<Stock> RemoveStockFromAccountAsync(Account account, int stock);
     }
 }

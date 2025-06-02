@@ -3,6 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 using api.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using api.Dtos.Stock;
+using api.Dtos;
+using api.Mappers;
+using api.Repositories;
 
 namespace api.Controllers
 {
@@ -12,17 +15,19 @@ namespace api.Controllers
     {
         private readonly IAccountRepository _accountRepository;
         private readonly IAccountStockRepository _accountStockRepository;
-        public AccountStocksController(IAccountRepository accountRepository, IAccountStockRepository accountStockRepository)
+        private readonly IStockRepository _stockRepository;
+        public AccountStocksController(IAccountRepository accountRepository, IAccountStockRepository accountStockRepository, IStockRepository stockRepository)
         {
             _accountStockRepository = accountStockRepository;
             _accountRepository = accountRepository;
+            _stockRepository = stockRepository;
         }
 
         [HttpGet]
         [Produces("application/json")]
-        [ProducesResponseType(typeof(IEnumerable<StockDto>), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(typeof(DataResponse<IEnumerable<StockDto>>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(MessageResponse), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(MessageResponse), StatusCodes.Status401Unauthorized)]
         [Authorize]
         public async Task<IActionResult> GetStocksByAccount()
         {
@@ -30,18 +35,20 @@ namespace api.Controllers
             var account = await _accountRepository.FindByUsernameAsync(username);
             if (account == null)
             {
-                return NotFound("Account not found.");
+                return NotFound(new MessageResponse("Account not found."));
             }
             var stocks = await _accountStockRepository.GetStocksDtoByAccountId(account);
 
-            return Ok(stocks);
+            return Ok(new DataResponse<IEnumerable<StockDto>>("Stocks retrieved successfully.", stocks));
+
         }
 
         [HttpPost("{stockId:int}")]
         [Produces("application/json")]
-        [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(DataResponse<IEnumerable<StockDto>>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(MessageResponse), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(MessageResponse), StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(typeof(MessageResponse), StatusCodes.Status400BadRequest)]
         [Authorize]
         public async Task<IActionResult> AddStockToAccount(int stockId)
         {
@@ -49,22 +56,34 @@ namespace api.Controllers
             var account = await _accountRepository.FindByUsernameAsync(username);
             if (account == null)
             {
-                return NotFound("Account not found.");
+                return NotFound(new MessageResponse("Account not found."));
             }
 
-            var result = await _accountStockRepository.AddStockToAccountAsync(account, stockId);
-            if (result)
+            var addedStock = await _accountStockRepository.AddStockToAccountAsync(account, stockId);
+            if (addedStock != null)
             {
-                return Ok("Stock added to account successfully.");
+                // REFRESH do stock para garantir que está atualizado e não tracked com outros comentários
+                var stockFromDb = await _stockRepository.GetByIdAsync(stockId);
+
+                // **Filtra os comentários pelo usuário logado usando o DTO**
+                var stockDto = stockFromDb?.TostockDto(account.Id);
+
+                if (stockDto == null)
+                {
+                    return BadRequest(new MessageResponse("Failed to retrieve the added stock."));
+                }
+
+                return Ok(new DataResponse<IEnumerable<StockDto>>("Stock added to account successfully.", [stockDto]));
             }
-            return BadRequest("Stock already exists in the account.");
+            return BadRequest(new MessageResponse("Stock already exists in the account."));
         }
 
         [HttpDelete("{stockId:int}")]
         [Produces("application/json")]
-        [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(DataResponse<IEnumerable<StockDto>>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(MessageResponse), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(MessageResponse), StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(typeof(MessageResponse), StatusCodes.Status400BadRequest)]
         [Authorize]
         public async Task<IActionResult> RemoveStockFromAccount(int stockId)
         {
@@ -72,15 +91,15 @@ namespace api.Controllers
             var account = await _accountRepository.FindByUsernameAsync(username);
             if (account == null)
             {
-                return NotFound("Account not found.");
+                return NotFound(new MessageResponse("Account not found."));
             }
 
-            var result = await _accountStockRepository.RemoveStockFromAccountAsync(account, stockId);
-            if (result)
+            var removedStock = await _accountStockRepository.RemoveStockFromAccountAsync(account, stockId);
+            if (removedStock != null)
             {
-                return Ok("Stock removed from account successfully.");
+                return Ok(new DataResponse<IEnumerable<StockDto>>("Stock removed from account successfully.", [removedStock.TostockDto(account.Id)]));
             }
-            return BadRequest("Stock does not exist in the account.");
+            return BadRequest(new MessageResponse("Stock does not exist in the account."));
         }
     }
 }

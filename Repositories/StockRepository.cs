@@ -50,9 +50,18 @@ namespace api.Repositories
 
             return await stocks.Skip(skipNumber).Take(queryObject.PageSize).ToListAsync();
         }
-        public async Task<Stock?> GetByIdAsync(int id)
+        public async Task<Stock?> GetByIdAsync(int stockId)
         {
-            return await _dbContext.Stocks.Include(s => s.Comments).FirstOrDefaultAsync(s => s.Id == id);
+            var stock = await _dbContext.Stocks
+                .Where(s => s.Id == stockId)
+                .Include(s => s.Comments)
+                    .ThenInclude(c => c.Account)
+                .FirstOrDefaultAsync();
+
+            if (stock == null)
+                return null;
+
+            return stock;
         }
 
         public async Task<Stock> CreateAsync(Stock stock)

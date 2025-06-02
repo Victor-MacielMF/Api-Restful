@@ -1,5 +1,6 @@
 using System.Security.Claims;
 using api.Dtos.Comment;
+using api.Extensions;
 using api.Interfaces;
 using api.Mappers;
 using Microsoft.AspNetCore.Authorization;
@@ -74,7 +75,8 @@ namespace api.Controllers
             {
                 return NotFound($"Stock with ID {stockId} not found.");
             }
-            var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+            //var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+            var userId = User.GetAccountId();
 
             var comment = commentDto.ToCommentFromCreateDTO(stockId, userId);
             if (comment == null)
