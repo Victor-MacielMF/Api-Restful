@@ -81,7 +81,7 @@ namespace api.Controllers
         [HttpDelete("{stockId:int}")]
         [Produces("application/json")]
         [ProducesResponseType(typeof(DataResponse<StockDto>), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(MessageResponse), StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(MessageResponse), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(MessageResponse), StatusCodes.Status404NotFound)]
         [Authorize]
