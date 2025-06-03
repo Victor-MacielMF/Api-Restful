@@ -19,7 +19,7 @@ namespace api.Repositories
 
         public async Task<List<Stock>> GetAllAsync(QueryObject queryObject)
         {
-            var stocks = _dbContext.Stocks.AsQueryable();
+            IQueryable<Stock> stocks = _dbContext.Stocks.AsQueryable();
             if(!string.IsNullOrEmpty(queryObject.Symbol))
             {
                 stocks = stocks.Where(s => s.Symbol.Contains(queryObject.Symbol));
@@ -46,13 +46,13 @@ namespace api.Repositories
             {
                 stocks = queryObject.IsAscending ? stocks.OrderBy(s => s.Id) : stocks.OrderByDescending(s => s.Id); // Default sorting by Id
             }
-            var skipNumber = (queryObject.PageNumber - 1 ) * queryObject.PageSize;
+            int skipNumber = (queryObject.PageNumber - 1 ) * queryObject.PageSize;
 
             return await stocks.Skip(skipNumber).Take(queryObject.PageSize).ToListAsync();
         }
         public async Task<Stock?> GetByIdAsync(int stockId)
         {
-            var stock = await _dbContext.Stocks
+            Stock? stock = await _dbContext.Stocks
                 .Where(s => s.Id == stockId)
                 .Include(s => s.Comments)
                     .ThenInclude(c => c.Account)
@@ -74,7 +74,7 @@ namespace api.Repositories
 
         public async Task<Stock?> UpdateAsync(int id, UpdateStockRequestDto stockDto)
         {
-            var existingStock = await _dbContext.Stocks.FirstOrDefaultAsync(s => s.Id == id);
+            Stock? existingStock = await _dbContext.Stocks.FirstOrDefaultAsync(s => s.Id == id);
             if (existingStock == null)
             {
                 return null;
@@ -94,7 +94,7 @@ namespace api.Repositories
         
         public async Task<Stock?> DeleteAsync(int id)
         {
-            var stock = await GetByIdAsync(id);
+            Stock? stock = await GetByIdAsync(id);
 
             if (stock == null)
             {

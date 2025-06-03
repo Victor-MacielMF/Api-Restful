@@ -10,12 +10,21 @@ namespace api.Dtos
         {
             Title = message;
             Data = data;
+            Errors = null;
         }
 
         public DataResponse(string message, IEnumerable<string>? errors = null)
         {
             Title = message;
             Errors = errors;
+            Data = default;
+        }
+
+        public DataResponse(string message)
+        {
+            Title = message;
+            Data = default;
+            Errors = null;
         }
     }
 }

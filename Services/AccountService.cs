@@ -2,6 +2,8 @@ using api.Dtos;
 using api.Dtos.Account;
 using api.Interfaces;
 using api.Mappers;
+using api.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace api.Services
 {
@@ -15,13 +17,13 @@ namespace api.Services
 
         public async Task<DataResponse<AccountDto>> RegisterAsync(CreateAccountDto dto)
         {
-            var account = dto.ToAccount();
+            Account account = dto.ToAccount();
             
-            var result = await _accountRepository.CreateAsync(account, dto.Password);
+            IdentityResult result = await _accountRepository.CreateAsync(account, dto.Password);
 
             if (result.Succeeded)
             {
-                var accountDto = account.ToAccountDto();
+                AccountDto accountDto = account.ToAccountDto();
                 return new DataResponse<AccountDto>("Account created successfully.", accountDto);
             }
             else

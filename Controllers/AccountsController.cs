@@ -19,13 +19,12 @@ namespace api.Controllers
         [HttpPost]
         [Produces("application/json")]
         [ProducesResponseType(typeof(DataResponse<AccountDto>), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(DataResponse<IEnumerable<string>>), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(DataResponse<IEnumerable<string>>), StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(typeof(DataResponse<string>), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Register([FromBody] CreateAccountDto createAccountDto)
         {
             try
             {
-                var result = await _accountService.RegisterAsync(createAccountDto);
+                DataResponse<AccountDto> result = await _accountService.RegisterAsync(createAccountDto);
                 if (result.Data != null)
                 {
                     return Ok(result);

@@ -7,5 +7,6 @@ namespace api.Interfaces
     {
         Task<IdentityResult> CreateAsync(Account account, string password);
         Task<Account?> FindByUsernameAsync(string username);
+        Task<Account?> GetAccountWithStocksAsync(string accountId);
     }
 }

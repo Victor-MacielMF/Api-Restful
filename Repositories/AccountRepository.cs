@@ -1,6 +1,7 @@
 using api.Interfaces;
 using api.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace api.Repositories
 {
@@ -10,6 +11,17 @@ namespace api.Repositories
         public AccountRepository(UserManager<Account> userManager)
         {
             _userManager = userManager;
+        }
+        
+        public async Task<Account?> GetAccountWithStocksAsync(string accountId)
+        {
+            Account? loadedAccount = await _userManager.Users.Include(a => a.Stocks)
+                .FirstOrDefaultAsync(a => a.Id == accountId.ToString());
+
+            if (loadedAccount == null)
+                return null;
+            
+            return loadedAccount;
         }
         public async Task<IdentityResult> CreateAsync(Account account, string password)
         {
@@ -22,17 +34,17 @@ namespace api.Repositories
                 return IdentityResult.Failed(new IdentityError { Description = "Username cannot be null or empty." });
             }
 
-            var existingUser = await _userManager.FindByNameAsync(account.UserName);
+            Account? existingUser = await _userManager.FindByNameAsync(account.UserName);
             if (existingUser != null)
             {
                 return IdentityResult.Failed(new IdentityError { Description = "User already exists." });
             }
 
-            var result = await _userManager.CreateAsync(account, password);
+            IdentityResult result = await _userManager.CreateAsync(account, password);
             if (!result.Succeeded)
                 return result;
 
-            var roleResult = await _userManager.AddToRoleAsync(account, "User");
+            IdentityResult roleResult = await _userManager.AddToRoleAsync(account, "User");
             if (!roleResult.Succeeded)
             {
                 await _userManager.DeleteAsync(account);

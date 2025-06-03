@@ -1,12 +1,12 @@
-using api.Dtos.Stock;
 using api.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace api.Interfaces
 {
     public interface IAccountStockRepository
     {
-        Task<List<StockDto>> GetStocksDtoByAccountId(Account accountId);
-        Task<Stock> AddStockToAccountAsync(Account account, int stock);
-        Task<Stock> RemoveStockFromAccountAsync(Account account, int stock);
+        Task<List<Stock>> GetStocksDtoByAccountId(Account accountId);
+        Task<IdentityResult> AddStockToAccountAsync(Account account, Stock stock);
+        Task<IdentityResult> RemoveStockFromAccountAsync(Account account, Stock stock);
     }
 }
