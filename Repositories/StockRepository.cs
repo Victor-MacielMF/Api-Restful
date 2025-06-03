@@ -2,7 +2,7 @@ using System.Security.Principal;
 using api.Data;
 using api.Dtos.Stock;
 using api.Helpers;
-using api.Interfaces;
+using api.Interfaces.Repositories;
 using api.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;

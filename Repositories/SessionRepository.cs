@@ -1,4 +1,4 @@
-using api.Interfaces;
+using api.Interfaces.Repositories;
 using api.Models;
 using Microsoft.AspNetCore.Identity;
 

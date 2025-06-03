@@ -1,8 +1,9 @@
 using api.Dtos;
 using api.Dtos.Account;
-using api.Interfaces;
 using api.Models;
 using api.Mappers;
+using api.Interfaces.Repositories;
+using api.Interfaces.Services;
 
 namespace api.Services
 {

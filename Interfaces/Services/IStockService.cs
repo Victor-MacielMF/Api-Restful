@@ -1,9 +1,8 @@
 using api.Dtos;
 using api.Dtos.Stock;
 using api.Helpers;
-using Microsoft.AspNetCore.Identity;
 
-namespace api.Interfaces
+namespace api.Interfaces.Services
 {
     public interface IStockService
     {

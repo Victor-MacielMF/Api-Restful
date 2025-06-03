@@ -1,6 +1,5 @@
 using api.Data;
 using api.Helpers;
-using api.Interfaces;
 using api.Repositories;
 using api.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -11,6 +10,8 @@ using Microsoft.OpenApi.Models;
 using api.Filters;
 using api.Models;
 using api.Middlewares;
+using api.Interfaces.Repositories;
+using api.Interfaces.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 

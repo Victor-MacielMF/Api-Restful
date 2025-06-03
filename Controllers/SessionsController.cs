@@ -1,6 +1,6 @@
 using api.Dtos;
 using api.Dtos.Account;
-using api.Interfaces;
+using api.Interfaces.Services;
 using api.Mappers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;

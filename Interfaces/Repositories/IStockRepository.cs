@@ -3,7 +3,7 @@ using api.Helpers;
 using api.Models;
 using Microsoft.AspNetCore.Identity;
 
-namespace api.Interfaces
+namespace api.Interfaces.Repositories
 {
     public interface IStockRepository
     {

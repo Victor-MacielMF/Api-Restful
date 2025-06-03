@@ -1,7 +1,7 @@
 using api.Dtos;
 using api.Dtos.Comment;
 
-namespace api.Interfaces
+namespace api.Interfaces.Services
 {
     public interface ICommentService
     {

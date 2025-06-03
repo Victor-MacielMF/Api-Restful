@@ -1,9 +1,9 @@
-using api.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using api.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using api.Dtos.Stock;
 using api.Dtos;
+using api.Interfaces.Services;
 
 namespace api.Controllers
 {

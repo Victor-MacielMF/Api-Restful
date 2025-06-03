@@ -1,6 +1,7 @@
 using api.Data;
 using api.Dtos.Stock;
 using api.Interfaces;
+using api.Interfaces.Repositories;
 using api.Mappers;
 using api.Models;
 using Microsoft.AspNetCore.Identity;
