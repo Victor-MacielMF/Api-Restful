@@ -22,12 +22,19 @@ namespace api.Controllers
         [Produces("application/json")]
         [ProducesResponseType(typeof(DataResponse<TokenDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(DataResponse<string>), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(DataResponse<string>), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Create([FromBody] LoginDto loginDto)
         {
             DataResponse<TokenDto> response = await _sessionService.CreateSessionAsync(loginDto);
 
-            if (response == null || response.Data == null)
-                return BadRequest(response);
+            if (response.Errors != null)
+            {
+                BadRequest(response);
+            }
+            else if (response.Data == null)
+            {
+                return NotFound(response);
+            }
 
             return Ok(response);
         }

@@ -28,5 +28,16 @@ namespace api.Services
 
             return new DataResponse<IEnumerable<StockWithoutCommentsDTO>>("Stocks retrieved successfully.", StocksDtos);
         }
+
+        public async Task<DataResponse<StockDto>> GetStock(int id)
+        {
+            Stock? stock = await _stockRepository.GetByIdAsync(id);
+            if (stock == null)
+            {
+                return new DataResponse<StockDto>($"Stock with ID {id} not found.");
+            }
+            
+            return new DataResponse<StockDto>("Stock retrieved successfully.", stock.TostockDto());
+        }
     }
 }

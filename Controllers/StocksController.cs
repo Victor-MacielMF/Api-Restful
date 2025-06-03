@@ -24,12 +24,16 @@ namespace api.Controllers
         [HttpGet]
         [Produces("application/json")]
         [ProducesResponseType(typeof(DataResponse<IEnumerable<StockWithoutCommentsDTO>>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(DataResponse<string>), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(DataResponse<string>), StatusCodes.Status404NotFound)]
-
         public async Task<IActionResult> GetAll([FromQuery] QueryObject queryObject)
         {
             var response = await _stockService.GetStocks(queryObject);
-            if (response.Data == null)
+            if (response.Errors != null)
+            {
+                BadRequest(response);
+            }
+            else if (response.Data == null)
             {
                 return NotFound(response);
             }
@@ -39,16 +43,22 @@ namespace api.Controllers
 
         [HttpGet("{id:int}")]
         [Produces("application/json")]
-        [ProducesResponseType(typeof(DataResponse<StockDto>), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(MessageResponse), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(DataResponse<IEnumerable<StockWithoutCommentsDTO>>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(DataResponse<string>), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(DataResponse<string>), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetById(int id)
         {
-            var stock = await _stockRepository.GetByIdAsync(id);
-            if (stock == null)
+            DataResponse<StockDto> response = await _stockService.GetStock(id);
+            if (response.Errors != null)
             {
-                return NotFound(new MessageResponse($"Stock with ID {id} not found."));
+                BadRequest(response);
             }
-            return Ok(new DataResponse<StockDto>("Stock retrieved successfully.", stock.TostockDto()));
+            else if (response.Data == null)
+            {
+                return NotFound(response);
+            }
+
+            return Ok(response);
         }
 
         [HttpPost]

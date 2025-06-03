@@ -21,6 +21,7 @@ namespace api.Controllers
         [Produces("application/json")]
         [ProducesResponseType(typeof(DataResponse<IEnumerable<StockDto>>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(DataResponse<string>), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(DataResponse<string>), StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [Authorize]
         public async Task<IActionResult> GetStocksByAccount()
@@ -28,8 +29,14 @@ namespace api.Controllers
             string username = User.GetUsername();
             DataResponse<List<StockDto>> response = await _accountStockService.GetStocksByAccountAsync(username);
 
-            if (response == null || response.Data == null)
-                return BadRequest(response);
+            if (response.Errors != null)
+            {
+                BadRequest(response);
+            }
+            else if (response.Data == null)
+            {
+                return NotFound(response);
+            }
 
             return Ok(response);
         }
@@ -38,6 +45,7 @@ namespace api.Controllers
         [Produces("application/json")]
         [ProducesResponseType(typeof(DataResponse<StockDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(DataResponse<string>), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(DataResponse<string>), StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [Authorize]
         public async Task<IActionResult> AddStockToAccount(int stockId)
@@ -45,9 +53,13 @@ namespace api.Controllers
             string username = User.GetUsername();
             DataResponse<StockDto> response = await _accountStockService.AddStockToAccountAsync(username, stockId);
 
-            if (response == null || response.Data == null)
+            if (response.Errors != null)
             {
-                return BadRequest(response);
+                BadRequest(response);
+            }
+            else if (response.Data == null)
+            {
+                return NotFound(response);
             }
 
             return Ok(response);
@@ -57,6 +69,7 @@ namespace api.Controllers
         [Produces("application/json")]
         [ProducesResponseType(typeof(DataResponse<StockDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(DataResponse<string>), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(DataResponse<string>), StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [Authorize]
         public async Task<IActionResult> RemoveStockFromAccount(int stockId)
@@ -64,9 +77,14 @@ namespace api.Controllers
             string username = User.GetUsername();
             DataResponse<StockDto> response = await _accountStockService.RemoveStockFromAccountAsync(username, stockId);
 
-            if (response == null || response.Data == null)
+
+            if (response.Errors != null)
             {
-                return BadRequest(response);
+                BadRequest(response);
+            }
+            else if (response.Data == null)
+            {
+                return NotFound(response);
             }
 
             return Ok(response);

@@ -6,6 +6,7 @@ namespace api.Interfaces
 {
     public interface IStockService
     {
-        Task<DataResponse<IEnumerable<StockWithoutCommentsDTO>>> GetStocks (QueryObject queryObject);
+        Task<DataResponse<IEnumerable<StockWithoutCommentsDTO>>> GetStocks(QueryObject queryObject);
+        Task<DataResponse<StockDto>> GetStock(int id);
     }
 }

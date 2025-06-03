@@ -20,19 +20,22 @@ namespace api.Controllers
         [Produces("application/json")]
         [ProducesResponseType(typeof(DataResponse<AccountDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(DataResponse<string>), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(DataResponse<string>), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Register([FromBody] CreateAccountDto createAccountDto)
         {
             try
             {
-                DataResponse<AccountDto> result = await _accountService.RegisterAsync(createAccountDto);
-                if (result.Data != null)
+                DataResponse<AccountDto> response = await _accountService.RegisterAsync(createAccountDto);
+                if (response.Errors != null)
                 {
-                    return Ok(result);
+                    BadRequest(response);
                 }
-                else
+                else if (response.Data == null)
                 {
-                    return BadRequest(result);
+                    return NotFound(response);
                 }
+
+                return Ok(response);
             }
             catch (Exception ex)
             {
