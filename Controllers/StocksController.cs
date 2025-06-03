@@ -14,26 +14,27 @@ namespace api.Controllers
     public class StocksController : ControllerBase
     {
         private readonly IStockRepository _stockRepository;
-        public StocksController(IStockRepository stockRepository)
+        private readonly IStockService _stockService;
+        public StocksController(IStockRepository stockRepository, IStockService stockService)
         {
             _stockRepository = stockRepository;
+            _stockService = stockService;
         }
 
         [HttpGet]
         [Produces("application/json")]
         [ProducesResponseType(typeof(DataResponse<IEnumerable<StockWithoutCommentsDTO>>), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(MessageResponse), StatusCodes.Status404NotFound)]
-        
+        [ProducesResponseType(typeof(DataResponse<string>), StatusCodes.Status404NotFound)]
+
         public async Task<IActionResult> GetAll([FromQuery] QueryObject queryObject)
         {
-            var stocks = await _stockRepository.GetAllAsync(queryObject);
-            if (stocks == null || !stocks.Any())
+            var response = await _stockService.GetStocks(queryObject);
+            if (response.Data == null)
             {
-                return NotFound(new MessageResponse("No stocks found."));
+                return NotFound(response);
             }
-            var StocksDtos = stocks.Select(s => s.ToStockWithoutCommentsDto());
 
-            return Ok(new DataResponse<IEnumerable<StockWithoutCommentsDTO>>("Stocks retrieved successfully.", StocksDtos));
+            return Ok(response);
         }
 
         [HttpGet("{id:int}")]
