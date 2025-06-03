@@ -7,14 +7,9 @@ namespace api.Mappers
     {
         public static CommentDto ToCommentDto(this Comment comment)
         {
-            if (comment == null)
-            {
-                return null;
-            }
-
             return new CommentDto
             {
-                CreatedBy = comment.Account.UserName,
+                CreatedBy = comment.Account?.UserName ?? string.Empty,
                 Id = comment.Id,
                 Title = comment.Title,
                 Content = comment.Content,
@@ -24,11 +19,6 @@ namespace api.Mappers
         }
         public static Comment ToCommentFromUpdateDTO(this UpdateCommentDto commentDto, Comment existingComment)
         {
-            if (commentDto == null || existingComment == null)
-            {
-                return null;
-            }
-
             existingComment.Title = commentDto.Title;
             existingComment.Content = commentDto.Content;
 
@@ -36,11 +26,6 @@ namespace api.Mappers
         }
         public static Comment ToCommentFromCreateDTO(this CreateCommentDto commentDto, int stockId, string accountId)
         {
-            if (commentDto == null)
-            {
-                return null;
-            }
-
             return new Comment
             {
                 Title = commentDto.Title,

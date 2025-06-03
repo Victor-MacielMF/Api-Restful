@@ -8,11 +8,6 @@ namespace api.Mappers
     {
         public static StockDto TostockDto(this Stock stock, string userId)
         {
-            if (stock == null)
-            {
-                return null;
-            }
-
             return new StockDto
             {
                 Id = stock.Id,
@@ -31,11 +26,6 @@ namespace api.Mappers
 
         public static StockDto TostockDto(this Stock stock)
         {
-            if (stock == null)
-            {
-                return null;
-            }
-
             return new StockDto
             {
                 Id = stock.Id,
@@ -51,11 +41,6 @@ namespace api.Mappers
 
         public static StockWithoutCommentsDTO ToStockWithoutCommentsDto(this Stock stock)
         {
-            if (stock == null)
-            {
-                return null;
-            }
-
             return new StockWithoutCommentsDTO
             {
                 Id = stock.Id,

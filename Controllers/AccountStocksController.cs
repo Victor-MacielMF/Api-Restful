@@ -26,7 +26,7 @@ namespace api.Controllers
         [Authorize]
         public async Task<IActionResult> GetStocksByAccount()
         {
-            string username = User.GetUsername();
+            string? username = User.GetUsername();
             DataResponse<List<StockDto>> response = await _accountStockService.GetStocksByAccountAsync(username);
 
             if (response.Errors != null)
@@ -50,7 +50,7 @@ namespace api.Controllers
         [Authorize]
         public async Task<IActionResult> AddStockToAccount(int stockId)
         {
-            string username = User.GetUsername();
+            string? username = User.GetUsername();
             DataResponse<StockDto> response = await _accountStockService.AddStockToAccountAsync(username, stockId);
 
             if (response.Errors != null)
@@ -74,7 +74,7 @@ namespace api.Controllers
         [Authorize]
         public async Task<IActionResult> RemoveStockFromAccount(int stockId)
         {
-            string username = User.GetUsername();
+            string? username = User.GetUsername();
             DataResponse<StockDto> response = await _accountStockService.RemoveStockFromAccountAsync(username, stockId);
 
 
