@@ -14,7 +14,7 @@ namespace api.Repositories
             _userManager = userManager;
             _signInManager = signInManager;
         }
-        public async Task<Account?> ValidateUserCredentialsAsync(string userName, string password)
+        public async Task<Account?> ValidateCredentialsAsync(string userName, string password)
         {
             if (string.IsNullOrEmpty(userName) || string.IsNullOrEmpty(password))
             {

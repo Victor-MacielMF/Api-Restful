@@ -4,6 +4,6 @@ namespace api.Interfaces.Repositories
 {
     public interface ISessionRepository
     {
-        Task<Account?> ValidateUserCredentialsAsync(string userName, string password);
+        Task<Account?> ValidateCredentialsAsync(string userName, string password);
     }
 }
