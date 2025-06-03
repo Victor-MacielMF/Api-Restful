@@ -5,8 +5,8 @@ namespace api.Interfaces.Repositories
 {
     public interface IAccountStockRepository
     {
-        Task<List<Stock>> GetStocksDtoByAccountId(Account accountId);
-        Task<IdentityResult> AddStockToAccountAsync(Account account, Stock stock);
-        Task<IdentityResult> RemoveStockFromAccountAsync(Account account, Stock stock);
+        Task<List<Stock>> GetAllByAccountAsync(Account accountId);
+        Task<IdentityResult> AddAsync(Account account, Stock stock);
+        Task<IdentityResult> RemoveAsync(Account account, Stock stock);
     }
 }

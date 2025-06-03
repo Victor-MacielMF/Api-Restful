@@ -26,7 +26,7 @@ namespace api.Services
             if (account == null)
                 return new DataResponse<List<StockDto>>("Account not found.");
 
-            List<Stock> stocks = await _accountStockRepository.GetStocksDtoByAccountId(account);
+            List<Stock> stocks = await _accountStockRepository.GetAllByAccountAsync(account);
             List<StockDto> stockDtos = stocks.Select(s => s.TostockDto()).ToList();
 
             return new DataResponse<List<StockDto>>("Stocks retrieved successfully.", stockDtos);
@@ -42,7 +42,7 @@ namespace api.Services
             if (stockFromDb == null)
                 return new DataResponse<StockDto>("Stock not found.");
 
-            IdentityResult result = await _accountStockRepository.AddStockToAccountAsync(account, stockFromDb);
+            IdentityResult result = await _accountStockRepository.AddAsync(account, stockFromDb);
             if (!result.Succeeded)
                 return new DataResponse<StockDto>("Failed to add stock to account.", result.Errors.Select(e => e.Description));
 
@@ -65,7 +65,7 @@ namespace api.Services
                 return new DataResponse<StockDto>("Stock not found.");
 
             // Chama o repositório para remover
-            IdentityResult result = await _accountStockRepository.RemoveStockFromAccountAsync(account, stockFromDb);
+            IdentityResult result = await _accountStockRepository.RemoveAsync(account, stockFromDb);
             if (!result.Succeeded)
                 return new DataResponse<StockDto>(
                     result.Errors.FirstOrDefault()?.Description ?? "Failed to remove stock."

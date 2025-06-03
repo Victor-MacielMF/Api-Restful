@@ -22,7 +22,7 @@ namespace api.Repositories
         }
 
 
-        public async Task<List<Stock>> GetStocksDtoByAccountId(Account account)
+        public async Task<List<Stock>> GetAllByAccountAsync(Account account)
         {
             //Se der erro aqui, é porque houve falha na lógica de programação. Então é aceitável lançar uma exceção mesmo que seja no repositório.
             if (account == null)
@@ -39,7 +39,7 @@ namespace api.Repositories
             return stocks;
         }
 
-        public async Task<IdentityResult> AddStockToAccountAsync(Account account, Stock stock)
+        public async Task<IdentityResult> AddAsync(Account account, Stock stock)
         {
             if (account == null)
                 return IdentityResult.Failed(new IdentityError { Description = "Account cannot be null." });
@@ -49,7 +49,7 @@ namespace api.Repositories
             // Garante que a navegação está carregada do contexto
                 if (!_context.Entry(account).Collection(a => a.Stocks).IsLoaded)
                 {
-                    Account? loadedAccount = await _accountRepository.GetAccountWithStocksAsync(account.Id);
+                    Account? loadedAccount = await _accountRepository.GetWithStocksByIdAsync(account.Id);
 
                     if (loadedAccount == null)
                         return IdentityResult.Failed(new IdentityError { Description = "Account not found." });
@@ -69,7 +69,7 @@ namespace api.Repositories
             return IdentityResult.Success;
         }
 
-            public async Task<IdentityResult> RemoveStockFromAccountAsync(Account account, Stock stockToRemove)
+            public async Task<IdentityResult> RemoveAsync(Account account, Stock stockToRemove)
             {
                 if (account == null)
                     return IdentityResult.Failed(new IdentityError { Description = "Account cannot be null." });
@@ -79,7 +79,7 @@ namespace api.Repositories
                 // Garante que a navegação está carregada do contexto
                 if (!_context.Entry(account).Collection(a => a.Stocks).IsLoaded)
                 {
-                    Account? loadedAccount = await _accountRepository.GetAccountWithStocksAsync(account.Id);
+                    Account? loadedAccount = await _accountRepository.GetWithStocksByIdAsync(account.Id);
 
                     if (loadedAccount == null)
                         return IdentityResult.Failed(new IdentityError { Description = "Account not found." });
