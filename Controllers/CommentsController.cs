@@ -67,7 +67,7 @@ namespace api.Controllers
         [HttpPost("{stockId:int}")]
         [Produces("application/json")]
         [Authorize]
-        [ProducesResponseType(typeof(DataResponse<CommentDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(DataResponse<CommentDto>), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(DataResponse<string>), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(DataResponse<string>), StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -85,7 +85,7 @@ namespace api.Controllers
                 return NotFound(response);
             }
 
-            return Ok(response);
+            return CreatedAtAction(nameof(GetById), new { id = response.Data?.Id }, response);
         }
 
         [HttpPut("{id:int}")]
