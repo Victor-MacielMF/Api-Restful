@@ -105,6 +105,7 @@ builder.Services.AddScoped<ISessionRepository, SessionRepository>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IAccountStockService, AccountStockService>();
+builder.Services.AddScoped<ISessionService, SessionService>();
 
 
 var app = builder.Build();

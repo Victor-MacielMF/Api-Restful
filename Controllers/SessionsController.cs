@@ -11,39 +11,25 @@ namespace api.Controllers
     [Route("api/v1/[controller]")]
     public class SessionsController : ControllerBase
     {
-        private readonly ISessionRepository _sessionRepository;
-        private readonly ITokenService _tokenService;
+        private readonly ISessionService _sessionService;
 
-        public SessionsController(ISessionRepository sessionRepository, ITokenService tokenService)
+        public SessionsController(ISessionService sessionService)
         {
-            _sessionRepository = sessionRepository;
-            _tokenService = tokenService;
+            _sessionService = sessionService;
         }
 
         [HttpPost]
         [Produces("application/json")]
         [ProducesResponseType(typeof(DataResponse<TokenDto>), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(MessageResponse), StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(typeof(DataResponse<string>), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Create([FromBody] LoginDto loginDto)
         {
-            try
-            {
-                var account = await _sessionRepository.ValidateUserCredentialsAsync(loginDto.UserName, loginDto.Password);
+            DataResponse<TokenDto> response = await _sessionService.CreateSessionAsync(loginDto);
 
-                if (account == null)
-                    return Unauthorized(new MessageResponse("Invalid username or password."));
+            if (response == null || response.Data == null)
+                return BadRequest(response);
 
-                var (token, expiresAt) = _tokenService.GenerateToken(account);
-
-                var authTokenDto = token.ToAuthTokenDto(expiresAt);
-
-                return Ok(new DataResponse<TokenDto>("Authentication successful.", authTokenDto));
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new MessageResponse($"An error occurred while processing your request: {ex.Message}"));
-            }
+            return Ok(response);
         }
     }
 
