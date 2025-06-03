@@ -20,7 +20,7 @@ namespace api.Controllers
         [ProducesResponseType(typeof(DataResponse<AccountDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(DataResponse<string>), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(DataResponse<string>), StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> Register([FromBody] CreateAccountDto createAccountDto)
+        public async Task<IActionResult> Create([FromBody] CreateAccountDto createAccountDto)
         {
             try
             {
