@@ -11,8 +11,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace api.Controllers
 {
-    [Route("api/v1/[controller]")]
     [ApiController]
+    [Route("api/v2/[controller]")]
     public class CommentsController : ControllerBase
     {
         private readonly ICommentService _commentService;

@@ -9,8 +9,8 @@ using Microsoft.AspNetCore.Mvc;
 namespace api.Controllers
 {
 
-    [Route("api/v1/[controller]")]
     [ApiController]
+    [Route("api/v2/[controller]")]
     public class StocksController : ControllerBase
     {
         private readonly IStockService _stockService;

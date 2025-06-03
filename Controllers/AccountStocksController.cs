@@ -8,7 +8,7 @@ using api.Interfaces.Services;
 namespace api.Controllers
 {
     [ApiController]
-    [Route("api/v1/[controller]")]
+    [Route("api/v2/[controller]")]
     public class AccountStocksController : ControllerBase
     {
         private readonly IAccountStockService _accountStockService;

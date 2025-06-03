@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 namespace api.Controllers
 {
     [ApiController]
-    [Route("api/v1/[controller]")]
+    [Route("api/v2/[controller]")]
     public class SessionsController : ControllerBase
     {
         private readonly ISessionService _sessionService;
