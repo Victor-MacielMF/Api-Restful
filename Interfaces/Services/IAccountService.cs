@@ -5,6 +5,6 @@ namespace api.Interfaces.Services
 {
     public interface IAccountService
     {
-        public Task<DataResponse<AccountDto>> RegisterAsync(CreateAccountDto dto);
+        public Task<DataResponse<AccountDto>> CreateAsync(CreateAccountDto dto);
     }
 }

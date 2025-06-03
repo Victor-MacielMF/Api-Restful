@@ -16,7 +16,7 @@ namespace api.Services
             _accountRepository = accountRepository;
         }
 
-        public async Task<DataResponse<AccountDto>> RegisterAsync(CreateAccountDto dto)
+        public async Task<DataResponse<AccountDto>> CreateAsync(CreateAccountDto dto)
         {
             Account account = dto.ToAccount();
             
