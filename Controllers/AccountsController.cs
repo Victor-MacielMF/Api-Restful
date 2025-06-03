@@ -28,7 +28,7 @@ namespace api.Controllers
                 DataResponse<AccountDto> response = await _accountService.RegisterAsync(createAccountDto);
                 if (response.Errors != null)
                 {
-                    BadRequest(response);
+                    return BadRequest(response);
                 }
                 else if (response.Data == null)
                 {

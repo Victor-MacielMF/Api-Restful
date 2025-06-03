@@ -29,7 +29,7 @@ namespace api.Controllers
             var response = await _stockService.GetStocks(queryObject);
             if (response.Errors != null)
             {
-                BadRequest(response);
+                return BadRequest(response);
             }
             else if (response.Data == null)
             {
@@ -49,7 +49,7 @@ namespace api.Controllers
             DataResponse<StockDto> response = await _stockService.GetStock(id);
             if (response.Errors != null)
             {
-                BadRequest(response);
+                return BadRequest(response);
             }
             else if (response.Data == null)
             {
@@ -72,7 +72,7 @@ namespace api.Controllers
 
             if (response.Errors != null)
             {
-                BadRequest(response);
+                return BadRequest(response);
             }
             else if (response.Data == null)
             {
@@ -95,7 +95,7 @@ namespace api.Controllers
 
             if (response.Errors != null)
             {
-                BadRequest(response);
+                return BadRequest(response);
             }
             else if (response.Data == null)
             {
@@ -118,13 +118,13 @@ namespace api.Controllers
             var response = await _stockService.DeleteStockAsync(id);
             if (response.Errors != null)
             {
-                BadRequest(response);
+                return BadRequest(response);
             }
             else if (response.Data == null)
             {
                 return NotFound(response);
             }
-            
+
             return Ok(response);
         }
     }

@@ -110,7 +110,6 @@ namespace api.Repositories
             }
         }
         
-        
         public async Task<IdentityResult> DeleteAsync(int id)
         {
             Stock? stock = await GetByIdAsync(id);

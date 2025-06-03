@@ -31,7 +31,7 @@ namespace api.Controllers
 
             if (response.Errors != null)
             {
-                BadRequest(response);
+                return BadRequest(response);
             }
             else if (response.Data == null)
             {
@@ -55,7 +55,7 @@ namespace api.Controllers
 
             if (response.Errors != null)
             {
-                BadRequest(response);
+                return BadRequest(response);
             }
             else if (response.Data == null)
             {
@@ -80,7 +80,7 @@ namespace api.Controllers
 
             if (response.Errors != null)
             {
-                BadRequest(response);
+                return BadRequest(response);
             }
             else if (response.Data == null)
             {

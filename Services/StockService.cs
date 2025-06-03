@@ -17,15 +17,45 @@ namespace api.Services
             _stockRepository = stockRepository;
         }
 
+        private static readonly HashSet<string> SortableFields = new()
+        {
+            "Id",
+            "Symbol",
+            "CompanyName",
+            "Purchase",
+            "LastDiv",
+            "Indutry",
+            "MarketCap"
+        };
+
         public async Task<DataResponse<IEnumerable<StockWithoutCommentsDTO>>> GetStocks(QueryObject queryObject)
         {
+            // Campos válidos para ordenação
+            var sortableFields = SortableFields;
+
+            // Validação do SortBy
+            if (!string.IsNullOrEmpty(queryObject.SortBy) && !sortableFields.Contains(queryObject.SortBy))
+            {
+                return new DataResponse<IEnumerable<StockWithoutCommentsDTO>>(
+                    $"Invalid sort field: {queryObject.SortBy}.",
+                    new List<string> { "Valid fields: " + string.Join(", ", sortableFields) }
+                );
+            }
+
+            // Ajusta SortBy para nome correto (capitalização)
+            if (!string.IsNullOrEmpty(queryObject.SortBy))
+            {
+                queryObject.SortBy = sortableFields.First(f => f.Equals(queryObject.SortBy, StringComparison.OrdinalIgnoreCase));
+            }
 
             List<Stock> stocks = await _stockRepository.GetAllAsync(queryObject);
-            if (stocks == null)
+
+            if (stocks == null || !stocks.Any())
             {
                 return new DataResponse<IEnumerable<StockWithoutCommentsDTO>>("No stocks found.");
             }
-            IEnumerable<StockWithoutCommentsDTO> StocksDtos = stocks.Select(s => s.ToStockWithoutCommentsDto());
+
+            var StocksDtos = stocks.Select(s => s.ToStockWithoutCommentsDto());
 
             return new DataResponse<IEnumerable<StockWithoutCommentsDTO>>("Stocks retrieved successfully.", StocksDtos);
         }
