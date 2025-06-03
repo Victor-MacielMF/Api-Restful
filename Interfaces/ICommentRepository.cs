@@ -1,4 +1,5 @@
 using api.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace api.Interfaces
 {
@@ -8,10 +9,10 @@ namespace api.Interfaces
 
         Task<Comment?> GetByIdAsync(int id);
 
-        Task<Comment> CreateAsync(Comment comment);
+        Task<IdentityResult> CreateAsync(Comment comment);
 
-        Task<Comment> UpdateAsync(Comment comment);
+        Task<IdentityResult> UpdateAsync(Comment comment);
 
-        Task<Comment> DeleteAsync(Comment comment);
+        Task<IdentityResult> DeleteAsync(Comment comment);
     }
 }

@@ -1,6 +1,7 @@
 using api.Data;
 using api.Interfaces;
 using api.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace api.Repositories
@@ -27,38 +28,62 @@ namespace api.Repositories
         }
 
 
-        public async Task<Comment> CreateAsync(Comment comment)
+        public async Task<IdentityResult> CreateAsync(Comment comment)
         {
-            await _dbContext.Comments.AddAsync(comment);
-            await _dbContext.SaveChangesAsync();
-            return comment;
+            if (comment == null)
+                return IdentityResult.Failed(new IdentityError { Description = "Comment cannot be null." });
+
+            try
+            {
+                await _dbContext.Comments.AddAsync(comment);
+                await _dbContext.SaveChangesAsync();
+                return IdentityResult.Success;
+            }
+            catch (Exception ex)
+            {
+                return IdentityResult.Failed(new IdentityError { Description = $"Error creating comment: {ex.Message}" });
+            }
         }
 
-        public async Task<Comment> UpdateAsync(Comment comment)
+        public async Task<IdentityResult> UpdateAsync(Comment comment)
         {
-            var existingComment = await _dbContext.Comments.FirstOrDefaultAsync(c => c.Id == comment.Id);
+            if (comment == null)
+                return IdentityResult.Failed(new IdentityError { Description = "Comment cannot be null." });
+
+            Comment? existingComment = await _dbContext.Comments.FirstOrDefaultAsync(c => c.Id == comment.Id);
             if (existingComment == null)
-            {
-                throw new ArgumentException("Comment not found.", nameof(comment));
-            }
+                return IdentityResult.Failed(new IdentityError { Description = "Comment not found." });
 
             existingComment.Content = comment.Content;
             existingComment.StockId = comment.StockId;
 
-            _dbContext.Comments.Update(existingComment);
-            await _dbContext.SaveChangesAsync();
-            return existingComment;
+            try
+            {
+                _dbContext.Comments.Update(existingComment);
+                await _dbContext.SaveChangesAsync();
+                return IdentityResult.Success;
+            }
+            catch (Exception ex)
+            {
+                return IdentityResult.Failed(new IdentityError { Description = $"Error updating comment: {ex.Message}" });
+            }
         }
 
-        public async Task<Comment> DeleteAsync(Comment comment)
+        public async Task<IdentityResult> DeleteAsync(Comment comment)
         {
             if (comment == null)
+                return IdentityResult.Failed(new IdentityError { Description = "Comment cannot be null." });
+
+            try
             {
-                throw new ArgumentNullException(nameof(comment), "Comment cannot be null.");
+                _dbContext.Comments.Remove(comment);
+                await _dbContext.SaveChangesAsync();
+                return IdentityResult.Success;
             }
-            _dbContext.Comments.Remove(comment);
-            await _dbContext.SaveChangesAsync();
-            return comment;
+            catch (Exception ex)
+            {
+                return IdentityResult.Failed(new IdentityError { Description = $"Error deleting comment: {ex.Message}" });
+            }
         }
     }
 }

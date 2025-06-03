@@ -111,6 +111,7 @@ builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IAccountStockService, AccountStockService>();
 builder.Services.AddScoped<ISessionService, SessionService>();
 builder.Services.AddScoped<IStockService, StockService>();
+builder.Services.AddScoped<ICommentService, CommentService>();
 
 
 var app = builder.Build();
