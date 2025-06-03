@@ -27,7 +27,7 @@ namespace api.Controllers
         public async Task<IActionResult> GetAll()
         {
             string? username = User.GetUsername();
-            DataResponse<List<StockDto>> response = await _accountStockService.GetStocksByAccountAsync(username);
+            DataResponse<List<StockDto>> response = await _accountStockService.GetAllAsync(username);
 
             if (response.Errors != null)
             {
@@ -51,7 +51,7 @@ namespace api.Controllers
         public async Task<IActionResult> Add(int stockId)
         {
             string? username = User.GetUsername();
-            DataResponse<StockDto> response = await _accountStockService.AddStockToAccountAsync(username, stockId);
+            DataResponse<StockDto> response = await _accountStockService.AddAsync(username, stockId);
 
             if (response.Errors != null)
             {
@@ -75,7 +75,7 @@ namespace api.Controllers
         public async Task<IActionResult> Remove(int stockId)
         {
             string? username = User.GetUsername();
-            DataResponse<StockDto> response = await _accountStockService.RemoveStockFromAccountAsync(username, stockId);
+            DataResponse<StockDto> response = await _accountStockService.RemoveAsync(username, stockId);
 
 
             if (response.Errors != null)

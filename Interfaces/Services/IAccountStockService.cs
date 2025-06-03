@@ -5,10 +5,10 @@ namespace api.Interfaces.Services
 {
     public interface IAccountStockService
     {
-        Task<DataResponse<List<StockDto>>> GetStocksByAccountAsync(string username);
+        Task<DataResponse<List<StockDto>>> GetAllAsync(string username);
 
-        Task<DataResponse<StockDto>> AddStockToAccountAsync(string username, int stockId);
+        Task<DataResponse<StockDto>> AddAsync(string username, int stockId);
         
-        Task<DataResponse<StockDto>> RemoveStockFromAccountAsync(string username, int stockId);
+        Task<DataResponse<StockDto>> RemoveAsync(string username, int stockId);
     }
 }

@@ -20,7 +20,7 @@ namespace api.Services
             _accountStockRepository = accountStockRepository;
         }
 
-        public async Task<DataResponse<List<StockDto>>> GetStocksByAccountAsync(string username)
+        public async Task<DataResponse<List<StockDto>>> GetAllAsync(string username)
         {
             Account? account = await _accountRepository.FindByUsernameAsync(username);
             if (account == null)
@@ -32,7 +32,7 @@ namespace api.Services
             return new DataResponse<List<StockDto>>("Stocks retrieved successfully.", stockDtos);
         }
 
-        public async Task<DataResponse<StockDto>> AddStockToAccountAsync(string username, int stockId)
+        public async Task<DataResponse<StockDto>> AddAsync(string username, int stockId)
         {
             Account? account = _accountRepository.FindByUsernameAsync(username).Result;
             if (account == null)
@@ -54,7 +54,7 @@ namespace api.Services
             return new DataResponse<StockDto>("Stock added to account successfully.", stockDto);
         }
 
-        public async Task<DataResponse<StockDto>> RemoveStockFromAccountAsync(string username, int stockId)
+        public async Task<DataResponse<StockDto>> RemoveAsync(string username, int stockId)
         {
             Account? account = await _accountRepository.FindByUsernameAsync(username);
             if (account == null)
