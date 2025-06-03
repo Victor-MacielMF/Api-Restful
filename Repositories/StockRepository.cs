@@ -1,8 +1,10 @@
+using System.Security.Principal;
 using api.Data;
 using api.Dtos.Stock;
 using api.Helpers;
 using api.Interfaces;
 using api.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace api.Repositories
@@ -64,20 +66,30 @@ namespace api.Repositories
             return stock;
         }
 
-        public async Task<Stock> CreateAsync(Stock stock)
+        public async Task<IdentityResult> CreateAsync(Stock stock)
         {
-            await _dbContext.Stocks.AddAsync(stock);
-            await _dbContext.SaveChangesAsync();
+            if (stock == null)
+                return IdentityResult.Failed(new IdentityError { Description = "Stock cannot be null." });
 
-            return stock;
+            try
+            {
+                await _dbContext.Stocks.AddAsync(stock);
+                await _dbContext.SaveChangesAsync();
+                return IdentityResult.Success;
+            }
+            catch (Exception ex)
+            {
+                return IdentityResult.Failed(new IdentityError { Description = $"Error adding stock: {ex.Message}" });
+            }
         }
 
-        public async Task<Stock?> UpdateAsync(int id, UpdateStockRequestDto stockDto)
+        public async Task<IdentityResult> UpdateAsync(int id, UpdateStockRequestDto stockDto)
         {
             Stock? existingStock = await _dbContext.Stocks.FirstOrDefaultAsync(s => s.Id == id);
+
             if (existingStock == null)
             {
-                return null;
+                return IdentityResult.Failed(new IdentityError { Description = "Stock not found." });
             }
 
             existingStock.Symbol = stockDto.Symbol;
@@ -87,23 +99,37 @@ namespace api.Repositories
             existingStock.Indutry = stockDto.Indutry;
             existingStock.MarketCap = stockDto.MarketCap;
 
-            await _dbContext.SaveChangesAsync();
-
-            return existingStock;
+            try
+            {
+                await _dbContext.SaveChangesAsync();
+                return IdentityResult.Success;
+            }
+            catch (Exception ex)
+            {
+                return IdentityResult.Failed(new IdentityError { Description = $"Error updating stock: {ex.Message}" });
+            }
         }
         
-        public async Task<Stock?> DeleteAsync(int id)
+        
+        public async Task<IdentityResult> DeleteAsync(int id)
         {
             Stock? stock = await GetByIdAsync(id);
 
             if (stock == null)
             {
-                return null;
+                return IdentityResult.Failed(new IdentityError { Description = "Stock not found." });
             }
-            _dbContext.Stocks.Remove(stock);
-            await _dbContext.SaveChangesAsync();
 
-            return stock;
+            try
+            {
+                _dbContext.Stocks.Remove(stock);
+                await _dbContext.SaveChangesAsync();
+                return IdentityResult.Success;
+            }
+            catch (Exception ex)
+            {
+                return IdentityResult.Failed(new IdentityError { Description = $"Error deleting stock: {ex.Message}" });
+            }
         }
 
         public async Task<bool> ExistsAsync(int id)

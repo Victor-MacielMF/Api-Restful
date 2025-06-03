@@ -4,6 +4,7 @@ using api.Helpers;
 using api.Interfaces;
 using api.Mappers;
 using api.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace api.Services
 {
@@ -38,6 +39,26 @@ namespace api.Services
             }
             
             return new DataResponse<StockDto>("Stock retrieved successfully.", stock.TostockDto());
+        }
+
+        public async Task<DataResponse<StockWithoutCommentsDTO>> PostStock(CreateStockRequestDto createStockDto)
+        {
+            Stock? stock = createStockDto.ToStockFromCreateDTO();
+            if (stock == null)
+            {
+                return new DataResponse<StockWithoutCommentsDTO>("Invalid stock data.");
+            }
+            IdentityResult result = await _stockRepository.CreateAsync(stock);
+
+            if (result.Succeeded)
+            {
+                StockWithoutCommentsDTO stockDto = stock.ToStockWithoutCommentsDto();
+                return new DataResponse<StockWithoutCommentsDTO>("Stock created successfully.", stockDto);
+            }
+            else
+            {
+                return new DataResponse<StockWithoutCommentsDTO>("Failed to create stock.", result.Errors.Select(e => e.Description));
+            }
         }
     }
 }

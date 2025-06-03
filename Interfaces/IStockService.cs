@@ -1,6 +1,7 @@
 using api.Dtos;
 using api.Dtos.Stock;
 using api.Helpers;
+using Microsoft.AspNetCore.Identity;
 
 namespace api.Interfaces
 {
@@ -8,5 +9,6 @@ namespace api.Interfaces
     {
         Task<DataResponse<IEnumerable<StockWithoutCommentsDTO>>> GetStocks(QueryObject queryObject);
         Task<DataResponse<StockDto>> GetStock(int id);
+        Task<DataResponse<StockWithoutCommentsDTO>> PostStock(CreateStockRequestDto stockDto);
     }
 }

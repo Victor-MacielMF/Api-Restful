@@ -1,6 +1,7 @@
 using api.Dtos.Stock;
 using api.Helpers;
 using api.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace api.Interfaces
 {
@@ -9,9 +10,9 @@ namespace api.Interfaces
         Task<List<Stock>> GetAllAsync(QueryObject queryObject);
 
         Task<Stock?> GetByIdAsync(int id);
-        Task<Stock> CreateAsync(Stock stock);
-        Task<Stock?> UpdateAsync(int id, UpdateStockRequestDto stockDto);
-        Task<Stock?> DeleteAsync(int id);
+        Task<IdentityResult> CreateAsync(Stock stock);
+        Task<IdentityResult> UpdateAsync(int id, UpdateStockRequestDto stockDto);
+        Task<IdentityResult> DeleteAsync(int id);
         Task<bool> ExistsAsync(int id); 
     }
 }

@@ -43,7 +43,7 @@ namespace api.Controllers
 
         [HttpGet("{id:int}")]
         [Produces("application/json")]
-        [ProducesResponseType(typeof(DataResponse<IEnumerable<StockWithoutCommentsDTO>>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(DataResponse<IEnumerable<StockDto>>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(DataResponse<string>), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(DataResponse<string>), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetById(int id)
@@ -63,24 +63,25 @@ namespace api.Controllers
 
         [HttpPost]
         [Produces("application/json")]
-        [ProducesResponseType(typeof(DataResponse<StockWithoutCommentsDTO>), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(MessageResponse), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(DataResponse<IEnumerable<StockWithoutCommentsDTO>>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(DataResponse<string>), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(DataResponse<string>), StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [Authorize]
         public async Task<IActionResult> Create([FromBody] CreateStockRequestDto stockDto)
         {
-            if (stockDto == null)
-            {
-                return BadRequest(new MessageResponse("Stock data is null."));
-            }
-            var stock = stockDto.ToStockFromCreateDTO();
-            if (stock == null)
-            {
-                return BadRequest(new MessageResponse("Invalid stock data."));
-            }
-            await _stockRepository.CreateAsync(stock);
+            DataResponse<StockWithoutCommentsDTO> response = await _stockService.PostStock(stockDto);
 
-            return Ok(new DataResponse<StockWithoutCommentsDTO>("Stock created successfully.", stock.ToStockWithoutCommentsDto()));
+            if (response.Errors != null)
+            {
+                BadRequest(response);
+            }
+            else if (response.Data == null)
+            {
+                return NotFound(response);
+            }
+
+            return Ok(response);
         }
 
         [HttpPut("{id:int}")]
@@ -101,7 +102,7 @@ namespace api.Controllers
             {
                 return NotFound(new MessageResponse($"Stock with ID {id} not found."));
             }
-            return Ok(new DataResponse<StockWithoutCommentsDTO>("Stock updated successfully.", existingStock.ToStockWithoutCommentsDto()));
+            return Ok(new DataResponse<StockWithoutCommentsDTO>("Stock updated successfully."));
         }
 
 
@@ -118,7 +119,7 @@ namespace api.Controllers
             {
                 return NotFound(new MessageResponse($"Stock with ID {id} not found."));
             }
-            return Ok(new DataResponse<StockDto>("Stock deleted successfully.", stock.TostockDto()));
+            return Ok(new DataResponse<StockDto>("Stock deleted successfully."));
         }
     }
 }
