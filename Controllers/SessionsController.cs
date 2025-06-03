@@ -20,7 +20,7 @@ namespace api.Controllers
 
         [HttpPost]
         [Produces("application/json")]
-        [ProducesResponseType(typeof(DataResponse<TokenDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(DataResponse<TokenDto>), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(DataResponse<string>), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(DataResponse<string>), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Create([FromBody] LoginDto loginDto)
@@ -36,7 +36,7 @@ namespace api.Controllers
                 return NotFound(response);
             }
 
-            return Ok(response);
+            return Created("/", response);
         }
     }
 
