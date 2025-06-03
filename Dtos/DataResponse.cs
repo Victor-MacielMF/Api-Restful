@@ -5,6 +5,7 @@ namespace api.Dtos
         public string Title { get; set; }
         public T? Data { get; set; }
         public IEnumerable<string>? Errors { get; set; }
+        public double? ElapsedMilliseconds { get; set; } = null;
 
         public DataResponse(string message, T? data = default)
         {

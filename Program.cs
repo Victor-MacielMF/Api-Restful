@@ -9,6 +9,7 @@ using Microsoft.IdentityModel.Tokens;
 using api.Services;
 using Microsoft.OpenApi.Models;
 using api.Helpers;
+using api.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
@@ -16,7 +17,10 @@ var builder = WebApplication.CreateBuilder(args);
 //builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JWT"));
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("Jwt"));
 
-builder.Services.AddControllers();
+builder.Services.AddControllers(options =>
+{
+    options.Filters.Add<ExecutionTimeFilter>();
+});
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(option =>
 {
