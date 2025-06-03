@@ -37,7 +37,7 @@ namespace api.Services
             {
                 return new DataResponse<StockDto>($"Stock with ID {id} not found.");
             }
-            
+
             return new DataResponse<StockDto>("Stock retrieved successfully.", stock.TostockDto());
         }
 
@@ -59,6 +59,37 @@ namespace api.Services
             {
                 return new DataResponse<StockWithoutCommentsDTO>("Failed to create stock.", result.Errors.Select(e => e.Description));
             }
+        }
+
+        public async Task<DataResponse<StockWithoutCommentsDTO>> PutStock(int id, UpdateStockRequestDto stockDto)
+        {
+            if (stockDto == null)
+                return new DataResponse<StockWithoutCommentsDTO>("Stock data is null.");
+
+            var result = await _stockRepository.UpdateAsync(id, stockDto);
+
+            if (!result.Succeeded)
+                return new DataResponse<StockWithoutCommentsDTO>(
+                    result.Errors.FirstOrDefault()?.Description ?? "Failed to update stock."
+                );
+
+            // Pega o stock atualizado para retornar no DTO
+            var updatedStock = await _stockRepository.GetByIdAsync(id);
+            var dto = updatedStock?.ToStockWithoutCommentsDto();
+
+            return new DataResponse<StockWithoutCommentsDTO>("Stock updated successfully.", dto);
+        }
+        
+        public async Task<DataResponse<string>> DeleteStockAsync(int id)
+        {
+            var result = await _stockRepository.DeleteAsync(id);
+
+            if (!result.Succeeded)
+                return new DataResponse<string>(
+                    result.Errors.FirstOrDefault()?.Description ?? "Failed to delete stock."
+                );
+
+            return new DataResponse<string>("Stock deleted successfully.");
         }
     }
 }

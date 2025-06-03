@@ -10,5 +10,7 @@ namespace api.Interfaces
         Task<DataResponse<IEnumerable<StockWithoutCommentsDTO>>> GetStocks(QueryObject queryObject);
         Task<DataResponse<StockDto>> GetStock(int id);
         Task<DataResponse<StockWithoutCommentsDTO>> PostStock(CreateStockRequestDto stockDto);
+        Task<DataResponse<StockWithoutCommentsDTO>> PutStock(int id, UpdateStockRequestDto stockDto);
+        Task<DataResponse<string>> DeleteStockAsync(int id);
     }
 }

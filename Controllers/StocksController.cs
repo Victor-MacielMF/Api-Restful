@@ -13,11 +13,9 @@ namespace api.Controllers
     [ApiController]
     public class StocksController : ControllerBase
     {
-        private readonly IStockRepository _stockRepository;
         private readonly IStockService _stockService;
-        public StocksController(IStockRepository stockRepository, IStockService stockService)
+        public StocksController(IStockService stockService)
         {
-            _stockRepository = stockRepository;
             _stockService = stockService;
         }
 
@@ -86,40 +84,48 @@ namespace api.Controllers
 
         [HttpPut("{id:int}")]
         [Produces("application/json")]
-        [ProducesResponseType(typeof(DataResponse<StockDto>), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(MessageResponse), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(DataResponse<IEnumerable<StockWithoutCommentsDTO>>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(DataResponse<string>), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(DataResponse<string>), StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        [ProducesResponseType(typeof(MessageResponse), StatusCodes.Status404NotFound)]
         [Authorize]
         public async Task<IActionResult> Update(int id, [FromBody] UpdateStockRequestDto stockDto)
         {
-            if (stockDto == null)
+            var response = await _stockService.PutStock(id, stockDto);
+
+            if (response.Errors != null)
             {
-                return BadRequest(new MessageResponse("Stock data is null."));
+                BadRequest(response);
             }
-            var existingStock = await _stockRepository.UpdateAsync(id, stockDto);
-            if (existingStock == null)
+            else if (response.Data == null)
             {
-                return NotFound(new MessageResponse($"Stock with ID {id} not found."));
+                return NotFound(response);
             }
-            return Ok(new DataResponse<StockWithoutCommentsDTO>("Stock updated successfully."));
+
+            return Ok(response);
         }
 
 
         [HttpDelete("{id:int}")]
         [Produces("application/json")]
-        [ProducesResponseType(typeof(DataResponse<StockDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(DataResponse<string>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(DataResponse<string>), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(DataResponse<string>), StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        [ProducesResponseType(typeof(MessageResponse), StatusCodes.Status404NotFound)]
         [Authorize]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
-            var stock = await _stockRepository.DeleteAsync(id);
-            if (stock == null)
+            var response = await _stockService.DeleteStockAsync(id);
+            if (response.Errors != null)
             {
-                return NotFound(new MessageResponse($"Stock with ID {id} not found."));
+                BadRequest(response);
             }
-            return Ok(new DataResponse<StockDto>("Stock deleted successfully."));
+            else if (response.Data == null)
+            {
+                return NotFound(response);
+            }
+            
+            return Ok(response);
         }
     }
 }
