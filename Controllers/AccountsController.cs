@@ -17,7 +17,7 @@ namespace api.Controllers
 
         [HttpPost]
         [Produces("application/json")]
-        [ProducesResponseType(typeof(DataResponse<AccountDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(DataResponse<AccountDto>), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(DataResponse<string>), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(DataResponse<string>), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Create([FromBody] CreateAccountDto createAccountDto)
@@ -33,8 +33,7 @@ namespace api.Controllers
                 {
                     return NotFound(response);
                 }
-
-                return Ok(response);
+                return Created("/", response);
             }
             catch (Exception ex)
             {
