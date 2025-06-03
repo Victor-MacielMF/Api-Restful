@@ -43,7 +43,7 @@ namespace api.Controllers
 
         [HttpPost("{stockId:int}")]
         [Produces("application/json")]
-        [ProducesResponseType(typeof(DataResponse<StockDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(DataResponse<StockDto>), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(DataResponse<string>), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(DataResponse<string>), StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -62,7 +62,7 @@ namespace api.Controllers
                 return NotFound(response);
             }
 
-            return Ok(response);
+            return Created("/",response);
         }
         
         [HttpDelete("{stockId:int}")]
