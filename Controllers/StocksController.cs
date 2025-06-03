@@ -26,7 +26,7 @@ namespace api.Controllers
         [ProducesResponseType(typeof(DataResponse<string>), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetAll([FromQuery] QueryObject queryObject)
         {
-            var response = await _stockService.GetStocks(queryObject);
+            var response = await _stockService.GetAllAsync(queryObject);
             if (response.Errors != null)
             {
                 return BadRequest(response);
@@ -46,7 +46,7 @@ namespace api.Controllers
         [ProducesResponseType(typeof(DataResponse<string>), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetById(int id)
         {
-            DataResponse<StockDto> response = await _stockService.GetStock(id);
+            DataResponse<StockDto> response = await _stockService.GetByIdAsync(id);
             if (response.Errors != null)
             {
                 return BadRequest(response);
@@ -68,7 +68,7 @@ namespace api.Controllers
         [Authorize]
         public async Task<IActionResult> Create([FromBody] CreateStockRequestDto stockDto)
         {
-            DataResponse<StockWithoutCommentsDTO> response = await _stockService.PostStock(stockDto);
+            DataResponse<StockWithoutCommentsDTO> response = await _stockService.CreateAsync(stockDto);
 
             if (response.Errors != null)
             {
@@ -91,7 +91,7 @@ namespace api.Controllers
         [Authorize]
         public async Task<IActionResult> Update(int id, [FromBody] UpdateStockRequestDto stockDto)
         {
-            var response = await _stockService.PutStock(id, stockDto);
+            var response = await _stockService.UpdateAsync(id, stockDto);
 
             if (response.Errors != null)
             {
@@ -115,7 +115,7 @@ namespace api.Controllers
         [Authorize]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
-            var response = await _stockService.DeleteStockAsync(id);
+            var response = await _stockService.DeleteAsync(id);
             if (response.Errors != null)
             {
                 return BadRequest(response);

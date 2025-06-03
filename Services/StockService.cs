@@ -29,7 +29,7 @@ namespace api.Services
             "MarketCap"
         };
 
-        public async Task<DataResponse<IEnumerable<StockWithoutCommentsDTO>>> GetStocks(QueryObject queryObject)
+        public async Task<DataResponse<IEnumerable<StockWithoutCommentsDTO>>> GetAllAsync(QueryObject queryObject)
         {
             // Campos válidos para ordenação
             var sortableFields = SortableFields;
@@ -61,7 +61,7 @@ namespace api.Services
             return new DataResponse<IEnumerable<StockWithoutCommentsDTO>>("Stocks retrieved successfully.", StocksDtos);
         }
 
-        public async Task<DataResponse<StockDto>> GetStock(int id)
+        public async Task<DataResponse<StockDto>> GetByIdAsync(int id)
         {
             Stock? stock = await _stockRepository.GetByIdAsync(id);
             if (stock == null)
@@ -72,7 +72,7 @@ namespace api.Services
             return new DataResponse<StockDto>("Stock retrieved successfully.", stock.TostockDto());
         }
 
-        public async Task<DataResponse<StockWithoutCommentsDTO>> PostStock(CreateStockRequestDto createStockDto)
+        public async Task<DataResponse<StockWithoutCommentsDTO>> CreateAsync(CreateStockRequestDto createStockDto)
         {
             Stock? stock = createStockDto.ToStockFromCreateDTO();
             if (stock == null)
@@ -92,7 +92,7 @@ namespace api.Services
             }
         }
 
-        public async Task<DataResponse<StockWithoutCommentsDTO>> PutStock(int id, UpdateStockRequestDto stockDto)
+        public async Task<DataResponse<StockWithoutCommentsDTO>> UpdateAsync(int id, UpdateStockRequestDto stockDto)
         {
             if (stockDto == null)
                 return new DataResponse<StockWithoutCommentsDTO>("Stock data is null.");
@@ -111,7 +111,7 @@ namespace api.Services
             return new DataResponse<StockWithoutCommentsDTO>("Stock updated successfully.", dto);
         }
         
-        public async Task<DataResponse<StockWithoutCommentsDTO>> DeleteStockAsync(int id)
+        public async Task<DataResponse<StockWithoutCommentsDTO>> DeleteAsync(int id)
         {
             var stock = await _stockRepository.GetByIdAsync(id);
 
