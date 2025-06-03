@@ -24,7 +24,7 @@ namespace api.Controllers
         [ProducesResponseType(typeof(DataResponse<string>), StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [Authorize]
-        public async Task<IActionResult> GetStocksByAccount()
+        public async Task<IActionResult> GetAll()
         {
             string? username = User.GetUsername();
             DataResponse<List<StockDto>> response = await _accountStockService.GetStocksByAccountAsync(username);
@@ -48,7 +48,7 @@ namespace api.Controllers
         [ProducesResponseType(typeof(DataResponse<string>), StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [Authorize]
-        public async Task<IActionResult> AddStockToAccount(int stockId)
+        public async Task<IActionResult> Add(int stockId)
         {
             string? username = User.GetUsername();
             DataResponse<StockDto> response = await _accountStockService.AddStockToAccountAsync(username, stockId);
@@ -72,7 +72,7 @@ namespace api.Controllers
         [ProducesResponseType(typeof(DataResponse<string>), StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [Authorize]
-        public async Task<IActionResult> RemoveStockFromAccount(int stockId)
+        public async Task<IActionResult> Remove(int stockId)
         {
             string? username = User.GetUsername();
             DataResponse<StockDto> response = await _accountStockService.RemoveStockFromAccountAsync(username, stockId);
