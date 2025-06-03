@@ -110,16 +110,25 @@ namespace api.Services
             return new DataResponse<StockWithoutCommentsDTO>("Stock updated successfully.", dto);
         }
         
-        public async Task<DataResponse<string>> DeleteStockAsync(int id)
+        public async Task<DataResponse<StockWithoutCommentsDTO>> DeleteStockAsync(int id)
         {
-            var result = await _stockRepository.DeleteAsync(id);
+            var stock = await _stockRepository.GetByIdAsync(id);
+
+            if (stock == null)
+                return new DataResponse<StockWithoutCommentsDTO>($"Stock with ID {id} not found.");
+
+            var result = await _stockRepository.DeleteAsync(stock);
 
             if (!result.Succeeded)
-                return new DataResponse<string>(
+                return new DataResponse<StockWithoutCommentsDTO>(
                     result.Errors.FirstOrDefault()?.Description ?? "Failed to delete stock."
                 );
 
-            return new DataResponse<string>("Stock deleted successfully.");
+            // Agora você pode retornar informações do stock deletado
+            return new DataResponse<StockWithoutCommentsDTO>(
+                "Stock deleted successfully.",
+                stock.ToStockWithoutCommentsDto()
+            );
         }
     }
 }

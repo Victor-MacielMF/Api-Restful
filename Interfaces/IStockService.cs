@@ -11,6 +11,6 @@ namespace api.Interfaces
         Task<DataResponse<StockDto>> GetStock(int id);
         Task<DataResponse<StockWithoutCommentsDTO>> PostStock(CreateStockRequestDto stockDto);
         Task<DataResponse<StockWithoutCommentsDTO>> PutStock(int id, UpdateStockRequestDto stockDto);
-        Task<DataResponse<string>> DeleteStockAsync(int id);
+        Task<DataResponse<StockWithoutCommentsDTO>> DeleteStockAsync(int id);
     }
 }

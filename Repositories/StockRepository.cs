@@ -110,14 +110,10 @@ namespace api.Repositories
             }
         }
         
-        public async Task<IdentityResult> DeleteAsync(int id)
+        public async Task<IdentityResult> DeleteAsync(Stock stock)
         {
-            Stock? stock = await GetByIdAsync(id);
-
             if (stock == null)
-            {
                 return IdentityResult.Failed(new IdentityError { Description = "Stock not found." });
-            }
 
             try
             {

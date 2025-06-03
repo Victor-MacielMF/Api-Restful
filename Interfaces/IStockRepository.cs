@@ -12,7 +12,7 @@ namespace api.Interfaces
         Task<Stock?> GetByIdAsync(int id);
         Task<IdentityResult> CreateAsync(Stock stock);
         Task<IdentityResult> UpdateAsync(int id, UpdateStockRequestDto stockDto);
-        Task<IdentityResult> DeleteAsync(int id);
+        Task<IdentityResult> DeleteAsync(Stock stock);
         Task<bool> ExistsAsync(int id); 
     }
 }
