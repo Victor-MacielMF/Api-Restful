@@ -29,7 +29,7 @@ namespace api.Controllers
         [ProducesResponseType(typeof(DataResponse<string>), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetAll()
         {
-            DataResponse<IEnumerable<CommentDto>> response = await _commentService.GetAllCommentsAsync();
+            DataResponse<IEnumerable<CommentDto>> response = await _commentService.GetAllAsync();
 
             if (response.Errors != null)
             {
@@ -50,7 +50,7 @@ namespace api.Controllers
         [ProducesResponseType(typeof(DataResponse<string>), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetById(int id)
         {
-            DataResponse<CommentDto> response = await _commentService.GetCommentByIdAsync(id);
+            DataResponse<CommentDto> response = await _commentService.GetByIdAsync(id);
 
             if (response.Errors != null)
             {
@@ -74,7 +74,7 @@ namespace api.Controllers
         public async Task<IActionResult> Create(int stockId, [FromBody] CreateCommentDto commentDto)
         {
             string userId = User.GetAccountId();
-            DataResponse<CommentDto> response = await _commentService.CreateCommentAsync(stockId, commentDto, userId);
+            DataResponse<CommentDto> response = await _commentService.CreateAsync(stockId, commentDto, userId);
 
             if (response.Errors != null)
             {
@@ -97,7 +97,7 @@ namespace api.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> Update(int id, [FromBody] UpdateCommentDto commentDto)
         {
-            DataResponse<CommentDto> response = await _commentService.UpdateCommentAsync(id, commentDto);
+            DataResponse<CommentDto> response = await _commentService.UpdateAsync(id, commentDto);
 
             if (response.Errors != null)
             {
@@ -120,7 +120,7 @@ namespace api.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> Delete(int id)
         {
-            DataResponse<CommentDto> response = await _commentService.DeleteCommentAsync(id);
+            DataResponse<CommentDto> response = await _commentService.DeleteAsync(id);
 
             if (response.Errors != null)
             {

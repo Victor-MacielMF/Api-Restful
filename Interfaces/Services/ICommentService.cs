@@ -5,10 +5,10 @@ namespace api.Interfaces.Services
 {
     public interface ICommentService
     {
-        Task<DataResponse<IEnumerable<CommentDto>>> GetAllCommentsAsync();
-        Task<DataResponse<CommentDto>> GetCommentByIdAsync(int id);
-        Task<DataResponse<CommentDto>> CreateCommentAsync(int stockId, CreateCommentDto commentDto, string userId);
-        Task<DataResponse<CommentDto>> UpdateCommentAsync(int id, UpdateCommentDto commentDto);
-        Task<DataResponse<CommentDto>> DeleteCommentAsync(int id);
+        Task<DataResponse<IEnumerable<CommentDto>>> GetAllAsync();
+        Task<DataResponse<CommentDto>> GetByIdAsync(int id);
+        Task<DataResponse<CommentDto>> CreateAsync(int stockId, CreateCommentDto commentDto, string userId);
+        Task<DataResponse<CommentDto>> UpdateAsync(int id, UpdateCommentDto commentDto);
+        Task<DataResponse<CommentDto>> DeleteAsync(int id);
     }
 }

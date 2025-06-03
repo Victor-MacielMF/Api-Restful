@@ -23,7 +23,7 @@ namespace api.Services
             _stockRepository = stockRepository;
         }
 
-        public async Task<DataResponse<IEnumerable<CommentDto>>> GetAllCommentsAsync()
+        public async Task<DataResponse<IEnumerable<CommentDto>>> GetAllAsync()
         {
             List<Comment> comments = await _commentRepository.GetAllAsync();
 
@@ -35,7 +35,7 @@ namespace api.Services
             return new DataResponse<IEnumerable<CommentDto>>("Comments retrieved successfully.", commentDtos);
         }
 
-        public async Task<DataResponse<CommentDto>> GetCommentByIdAsync(int id)
+        public async Task<DataResponse<CommentDto>> GetByIdAsync(int id)
         {
             Comment? comment = await _commentRepository.GetByIdAsync(id);
 
@@ -45,7 +45,7 @@ namespace api.Services
             return new DataResponse<CommentDto>("Comment retrieved successfully.", comment.ToCommentDto());
         }
 
-        public async Task<DataResponse<CommentDto>> CreateCommentAsync(int stockId, CreateCommentDto commentDto, string userId)
+        public async Task<DataResponse<CommentDto>> CreateAsync(int stockId, CreateCommentDto commentDto, string userId)
         {
             if (commentDto == null)
                 return new DataResponse<CommentDto>("Comment data is null.");
@@ -74,7 +74,7 @@ namespace api.Services
             return new DataResponse<CommentDto>("Comment created successfully.", userComment.ToCommentDto());
         }
 
-        public async Task<DataResponse<CommentDto>> UpdateCommentAsync(int id, UpdateCommentDto commentDto)
+        public async Task<DataResponse<CommentDto>> UpdateAsync(int id, UpdateCommentDto commentDto)
         {
             if (commentDto == null)
                 return new DataResponse<CommentDto>("Comment data is null.");
@@ -100,7 +100,7 @@ namespace api.Services
             return new DataResponse<CommentDto>("Comment updated successfully.", refreshedComment?.ToCommentDto());
         }
 
-        public async Task<DataResponse<CommentDto>> DeleteCommentAsync(int id)
+        public async Task<DataResponse<CommentDto>> DeleteAsync(int id)
         {
             Comment? existingComment = await _commentRepository.GetByIdAsync(id);
             if (existingComment == null)
