@@ -22,7 +22,7 @@ namespace api.Services
 
         public async Task<DataResponse<List<StockDto>>> GetAllAsync(string username)
         {
-            Account? account = await _accountRepository.FindByUsernameAsync(username);
+            Account? account = await _accountRepository.GetByUsernameAsync(username);
             if (account == null)
                 return new DataResponse<List<StockDto>>("Account not found.");
 
@@ -34,7 +34,7 @@ namespace api.Services
 
         public async Task<DataResponse<StockDto>> AddAsync(string username, int stockId)
         {
-            Account? account = _accountRepository.FindByUsernameAsync(username).Result;
+            Account? account = _accountRepository.GetByUsernameAsync(username).Result;
             if (account == null)
                 return new DataResponse<StockDto>("Account not found.");
 
@@ -56,7 +56,7 @@ namespace api.Services
 
         public async Task<DataResponse<StockDto>> RemoveAsync(string username, int stockId)
         {
-            Account? account = await _accountRepository.FindByUsernameAsync(username);
+            Account? account = await _accountRepository.GetByUsernameAsync(username);
             if (account == null)
                 return new DataResponse<StockDto>("Account not found.");
             

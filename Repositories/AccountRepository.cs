@@ -13,8 +13,12 @@ namespace api.Repositories
         {
             _userManager = userManager;
         }
+        public async Task<Account?> GetByUsernameAsync(string username)
+        {
+            return await _userManager.FindByNameAsync(username);
+        }
         
-        public async Task<Account?> GetAccountWithStocksAsync(string accountId)
+        public async Task<Account?> GetWithStocksByIdAsync (string accountId)
         {
             Account? loadedAccount = await _userManager.Users.Include(a => a.Stocks)
                 .FirstOrDefaultAsync(a => a.Id == accountId.ToString());
@@ -24,6 +28,7 @@ namespace api.Repositories
             
             return loadedAccount;
         }
+
         public async Task<IdentityResult> CreateAsync(Account account, string password)
         {
             if (account == null || string.IsNullOrEmpty(password))
@@ -53,11 +58,6 @@ namespace api.Repositories
             }
 
             return result;
-        }
-
-        public async Task<Account?> FindByUsernameAsync(string username)
-        {
-            return await _userManager.FindByNameAsync(username);
         }
     }
 }
