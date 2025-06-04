@@ -96,7 +96,7 @@ namespace api.Repositories
             existingStock.CompanyName = stockDto.CompanyName;
             existingStock.Purchase = stockDto.Purchase;
             existingStock.LastDiv = stockDto.LastDiv;
-            existingStock.Indutry = stockDto.Indutry;
+            existingStock.Industry = stockDto.Industry;
             existingStock.MarketCap = stockDto.MarketCap;
 
             try

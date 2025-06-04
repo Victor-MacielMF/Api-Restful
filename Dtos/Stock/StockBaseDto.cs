@@ -25,7 +25,7 @@ namespace api.Dtos.Stock
         [Required]
         [MinLength(2, ErrorMessage = "Industry must be at least 2 character long.")]
         [MaxLength(100, ErrorMessage = "Industry must not exceed 100 characters.")]
-        public string Indutry { get; set; } = string.Empty;
+        public string Industry { get; set; } = string.Empty;
 
         [Required]
         [Range(0, long.MaxValue, ErrorMessage = "Market cap must be a non-negative value.")]

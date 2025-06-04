@@ -15,7 +15,7 @@ namespace api.Mappers
                         CompanyName = stock.CompanyName,
                         Purchase = stock.Purchase,
                         LastDiv = stock.LastDiv,
-                        Indutry = stock.Indutry,
+                        Industry = stock.Industry,
                         MarketCap = stock.MarketCap,
                         Comments = stock.Comments
                             .Where(c => c.AccountId == userId)
@@ -33,7 +33,7 @@ namespace api.Mappers
                 CompanyName = stock.CompanyName,
                 Purchase = stock.Purchase,
                 LastDiv = stock.LastDiv,
-                Indutry = stock.Indutry,
+                Industry = stock.Industry,
                 MarketCap = stock.MarketCap,
                 Comments = stock.Comments.Select(c => c.ToCommentDto()).ToList()
             };
@@ -48,7 +48,7 @@ namespace api.Mappers
                 CompanyName = stock.CompanyName,
                 Purchase = stock.Purchase,
                 LastDiv = stock.LastDiv,
-                Indutry = stock.Indutry,
+                Industry = stock.Industry,
                 MarketCap = stock.MarketCap
             };
         }
@@ -61,7 +61,7 @@ namespace api.Mappers
                 CompanyName = stockDto.CompanyName,
                 Purchase = stockDto.Purchase,
                 LastDiv = stockDto.LastDiv,
-                Indutry = stockDto.Indutry,
+                Industry = stockDto.Industry,
                 MarketCap = stockDto.MarketCap
             };
         }

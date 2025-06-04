@@ -299,7 +299,7 @@ namespace api.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Indutry")
+                    b.Property<string>("Industry")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

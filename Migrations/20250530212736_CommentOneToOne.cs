@@ -61,7 +61,7 @@ namespace api.Migrations
                     CompanyName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Purchase = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     LastDiv = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Indutry = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Industry = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     MarketCap = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>

@@ -25,7 +25,7 @@ namespace api.Services
             "CompanyName",
             "Purchase",
             "LastDiv",
-            "Indutry",
+            "Industry",
             "MarketCap"
         };
 
