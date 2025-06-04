@@ -14,14 +14,14 @@ namespace api.Repositories
             _userManager = userManager;
             _signInManager = signInManager;
         }
-        public async Task<Account?> ValidateCredentialsAsync(string userName, string password)
+        public async Task<Account?> ValidateCredentialsAsync(string email, string password)
         {
-            if (string.IsNullOrEmpty(userName) || string.IsNullOrEmpty(password))
+            if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
             {
                 return null;
             }
 
-            var user = await _userManager.FindByNameAsync(userName);
+            var user = await _userManager.FindByEmailAsync(email);
             if (user == null)
             {
                 return null;

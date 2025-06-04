@@ -19,7 +19,7 @@ namespace api.Services
 
         public async Task<DataResponse<TokenDto>> CreateSessionAsync(LoginDto loginDto)
         {
-            Account? account = await _sessionRepository.ValidateCredentialsAsync(loginDto.UserName, loginDto.Password);
+            Account? account = await _sessionRepository.ValidateCredentialsAsync(loginDto.Email, loginDto.Password);
             if (account == null)
                 return new DataResponse<TokenDto>("Invalid username or password.");
 
