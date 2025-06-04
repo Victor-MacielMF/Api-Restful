@@ -63,7 +63,7 @@ cd api-restful
 
 ```json
 "ConnectionStrings": {
-  "DefaultConnection": "Server=localhost;Database=Senai;Trusted_Connection=True;"
+  "DefaultConnection":
 }
 ```
 
@@ -82,16 +82,12 @@ dotnet ef database update
 5. **Rode a aplicação:**
 
 ```bash
-dotnet run
+dotnet watch run
 ```
-
-6. **Acesse a documentação no navegador:**
-
-```
-https://localhost:7057/swagger
-```
-
 Use o botão **Authorize** para inserir seu token JWT e testar endpoints protegidos.
+
+![image](https://github.com/user-attachments/assets/01d033af-0254-4e20-8552-0c3f9e9c0adc)
+
 
 ---
 
