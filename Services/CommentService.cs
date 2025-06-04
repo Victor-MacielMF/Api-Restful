@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using api.Dtos;
 using api.Dtos.Comment;
+using api.Helpers;
 using api.Interfaces.Repositories;
 using api.Interfaces.Services;
 using api.Mappers;
@@ -23,9 +24,9 @@ namespace api.Services
             _stockRepository = stockRepository;
         }
 
-        public async Task<DataResponse<IEnumerable<CommentDto>>> GetAllAsync()
+        public async Task<DataResponse<IEnumerable<CommentDto>>> GetAllAsync(QueryParameters queryParameters)
         {
-            List<Comment> comments = await _commentRepository.GetAllAsync();
+            List<Comment> comments = await _commentRepository.GetAllAsync(queryParameters);
 
             if (comments == null || !comments.Any())
                 return new DataResponse<IEnumerable<CommentDto>>("No comments found.");

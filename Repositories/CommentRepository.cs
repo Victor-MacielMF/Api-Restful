@@ -1,4 +1,5 @@
 using api.Data;
+using api.Helpers;
 using api.Interfaces.Repositories;
 using api.Models;
 using Microsoft.AspNetCore.Identity;
@@ -14,9 +15,13 @@ namespace api.Repositories
             _dbContext = dbContext;
         }
 
-        public async Task<List<Comment>> GetAllAsync()
+        public async Task<List<Comment>> GetAllAsync(QueryParameters queryParameters)
         {
-            return await _dbContext.Comments.Include(c => c.Account).ToListAsync();
+            IQueryable<Comment> queryComments = _dbContext.Comments.AsQueryable();
+            
+            int skipNumber = (queryParameters.PageNumber - 1 ) * queryParameters.PageSize;
+            
+            return await queryComments.Skip(skipNumber).Take(queryParameters.PageSize).ToListAsync();
         }
 
         public async Task<Comment?> GetByIdAsync(int id)
