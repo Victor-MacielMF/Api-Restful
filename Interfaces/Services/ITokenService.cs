@@ -4,6 +4,6 @@ namespace api.Interfaces.Services
 {
     public interface ITokenService
     {
-        (string Token, DateTime ExpiresAt) GenerateToken(Account account);
+        Task<(string Token, DateTime ExpiresAt)> GenerateTokenAsync(Account account);
     }
 }

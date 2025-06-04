@@ -63,9 +63,10 @@ namespace api.Controllers
         [Produces("application/json")]
         [ProducesResponseType(typeof(DataResponse<IEnumerable<StockWithoutCommentsDTO>>), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(DataResponse<string>), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(DataResponse<string>), StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(typeof(DataResponse<string>), StatusCodes.Status403Forbidden)]
         [ProducesResponseType(typeof(DataResponse<string>), StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        [Authorize]
+        [Authorize(Roles ="Admin")]
         public async Task<IActionResult> Create([FromBody] CreateStockRequestDto stockDto)
         {
             DataResponse<StockWithoutCommentsDTO> response = await _stockService.CreateAsync(stockDto);
@@ -86,9 +87,10 @@ namespace api.Controllers
         [Produces("application/json")]
         [ProducesResponseType(typeof(DataResponse<IEnumerable<StockWithoutCommentsDTO>>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(DataResponse<string>), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(DataResponse<string>), StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(typeof(DataResponse<string>), StatusCodes.Status403Forbidden)]
         [ProducesResponseType(typeof(DataResponse<string>), StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        [Authorize]
+        [Authorize(Roles ="Admin")]
         public async Task<IActionResult> Update(int id, [FromBody] UpdateStockRequestDto stockDto)
         {
             var response = await _stockService.UpdateAsync(id, stockDto);
@@ -110,9 +112,10 @@ namespace api.Controllers
         [Produces("application/json")]
         [ProducesResponseType(typeof(DataResponse<string>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(DataResponse<string>), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(DataResponse<string>), StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(typeof(DataResponse<string>), StatusCodes.Status403Forbidden)]
         [ProducesResponseType(typeof(DataResponse<string>), StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        [Authorize]
+        [Authorize(Roles ="Admin")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
             var response = await _stockService.DeleteAsync(id);

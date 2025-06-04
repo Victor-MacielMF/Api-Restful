@@ -12,6 +12,7 @@ using api.Models;
 using api.Middlewares;
 using api.Interfaces.Repositories;
 using api.Interfaces.Services;
+using Microsoft.AspNetCore.Authorization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -122,6 +123,8 @@ builder.Services.AddAuthentication(options =>
 // builder.Services.AddHealthChecks();
 
 // ==================== INJEÇÃO DE DEPENDÊNCIAS ====================
+// Erro de Autorização customizado.
+builder.Services.AddSingleton<IAuthorizationMiddlewareResultHandler, CustomAuthorizationMiddlewareResultHandler>();
 
 // Repositórios
 builder.Services.AddScoped<IStockRepository, StockRepository>();

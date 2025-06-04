@@ -23,7 +23,7 @@ namespace api.Services
             if (account == null)
                 return new DataResponse<TokenDto>("Invalid username or password.");
 
-            (string token, DateTime expiresAt) = _tokenService.GenerateToken(account);
+            (string token, DateTime expiresAt) = await _tokenService.GenerateTokenAsync(account);
 
             TokenDto authTokenDto = token.ToAuthTokenDto(expiresAt);
 
