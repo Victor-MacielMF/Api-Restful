@@ -27,7 +27,7 @@ namespace api.Services
                 return new DataResponse<List<StockDto>>("Account not found.");
 
             List<Stock> stocks = await _accountStockRepository.GetAllByAccountAsync(account);
-            List<StockDto> stockDtos = stocks.Select(s => s.TostockDto()).ToList();
+            List<StockDto> stockDtos = stocks.Select(s => s.TostockDto(account.Id)).ToList();
 
             return new DataResponse<List<StockDto>>("Stocks retrieved successfully.", stockDtos);
         }
