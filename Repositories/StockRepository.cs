@@ -19,7 +19,7 @@ namespace api.Repositories
             _dbContext = dbContext;
         }
 
-        public async Task<List<Stock>> GetAllAsync(QueryObject queryObject)
+        public async Task<List<Stock>> GetAllAsync(StockQueryParameters queryObject)
         {
             IQueryable<Stock> stocks = _dbContext.Stocks.AsQueryable();
             if(!string.IsNullOrEmpty(queryObject.Symbol))

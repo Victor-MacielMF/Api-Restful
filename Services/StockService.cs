@@ -29,7 +29,7 @@ namespace api.Services
             "MarketCap"
         };
 
-        public async Task<DataResponse<IEnumerable<StockWithoutCommentsDTO>>> GetAllAsync(QueryObject queryObject)
+        public async Task<DataResponse<IEnumerable<StockWithoutCommentsDTO>>> GetAllAsync(StockQueryParameters queryObject)
         {
             // Campos válidos para ordenação
             var sortableFields = SortableFields;

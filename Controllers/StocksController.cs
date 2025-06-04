@@ -24,7 +24,7 @@ namespace api.Controllers
         [ProducesResponseType(typeof(DataResponse<IEnumerable<StockWithoutCommentsDTO>>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(DataResponse<string>), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(DataResponse<string>), StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> GetAll([FromQuery] QueryObject queryObject)
+        public async Task<IActionResult> GetAll([FromQuery] StockQueryParameters queryObject)
         {
             var response = await _stockService.GetAllAsync(queryObject);
             if (response.Errors != null)

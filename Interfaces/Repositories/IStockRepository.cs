@@ -7,7 +7,7 @@ namespace api.Interfaces.Repositories
 {
     public interface IStockRepository
     {
-        Task<List<Stock>> GetAllAsync(QueryObject queryObject);
+        Task<List<Stock>> GetAllAsync(StockQueryParameters queryObject);
 
         Task<Stock?> GetByIdAsync(int id);
         Task<IdentityResult> CreateAsync(Stock stock);

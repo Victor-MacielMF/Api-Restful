@@ -6,7 +6,7 @@ namespace api.Interfaces.Services
 {
     public interface IStockService
     {
-        Task<DataResponse<IEnumerable<StockWithoutCommentsDTO>>> GetAllAsync(QueryObject queryObject);
+        Task<DataResponse<IEnumerable<StockWithoutCommentsDTO>>> GetAllAsync(StockQueryParameters queryObject);
         Task<DataResponse<StockDto>> GetByIdAsync(int id);
         Task<DataResponse<StockWithoutCommentsDTO>> CreateAsync(CreateStockRequestDto stockDto);
         Task<DataResponse<StockWithoutCommentsDTO>> UpdateAsync(int id, UpdateStockRequestDto stockDto);
