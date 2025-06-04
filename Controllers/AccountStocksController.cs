@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using api.Dtos.Stock;
 using api.Dtos;
 using api.Interfaces.Services;
+using api.Helpers;
 
 namespace api.Controllers
 {
@@ -24,10 +25,10 @@ namespace api.Controllers
         [ProducesResponseType(typeof(DataResponse<string>), StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [Authorize]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll([FromQuery] QueryParameters queryObject)
         {
             string? username = User.GetUsername();
-            DataResponse<List<StockDto>> response = await _accountStockService.GetAllAsync(username);
+            DataResponse<List<StockDto>> response = await _accountStockService.GetAllAsync(username, queryObject);
 
             if (response.Errors != null)
             {
