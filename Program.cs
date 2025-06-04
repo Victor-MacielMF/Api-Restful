@@ -18,7 +18,7 @@ var builder = WebApplication.CreateBuilder(args);
 // ==================== CONFIGURAÇÕES DE SETTINGS ====================
 
 // Injeta JwtSettings como singleton para uso via DI em serviços
-var jwtSettings = builder.Configuration.GetSection("Jwt").Get<JwtSettings>();
+var jwtSettings = builder.Configuration.GetSection("JWT").Get<JwtSettings>();
 if (jwtSettings == null)
 {
     throw new InvalidOperationException("JwtSettings section is missing or invalid in configuration.");
@@ -35,7 +35,8 @@ builder.Services.AddControllers(options =>
 .AddNewtonsoftJson(options =>
 {
     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
-    options.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
+    //Mostra as váriaveis nulas nos DTO.
+    options.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Include;
 });
 
 // ==================== SWAGGER ====================

@@ -97,7 +97,7 @@ namespace api.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> Update(int id, [FromBody] UpdateCommentDto commentDto)
         {
-            DataResponse<CommentDto> response = await _commentService.UpdateAsync(id, commentDto);
+            DataResponse<CommentDto> response = await _commentService.UpdateAsync(id, commentDto, User.GetAccountId());
 
             if (response.Errors != null)
             {
@@ -120,7 +120,7 @@ namespace api.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> Delete(int id)
         {
-            DataResponse<CommentDto> response = await _commentService.DeleteAsync(id);
+            DataResponse<CommentDto> response = await _commentService.DeleteAsync(id, User.GetAccountId());
 
             if (response.Errors != null)
             {

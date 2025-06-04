@@ -11,12 +11,10 @@ namespace api.Services
     public class TokenService : ITokenService
     {
         private readonly JwtSettings _jwtSettings;
-        private readonly SymmetricSecurityKey _signingKey;
 
-        public TokenService(IOptions<JwtSettings> jwtOptions)
+        public TokenService(JwtSettings jwtSettings)
         {
-            _jwtSettings = jwtOptions.Value;
-            _signingKey = JwtUtils.GetSymmetricSecurityKey(_jwtSettings.SigningKey);
+            _jwtSettings = jwtSettings;
         }
 
         public (string Token, DateTime ExpiresAt) GenerateToken(Account account)
@@ -28,7 +26,7 @@ namespace api.Services
                 new Claim(ClaimTypes.Email, account.Email),
             };
 
-            var credentials = new SigningCredentials(_signingKey, SecurityAlgorithms.HmacSha256);
+            var credentials = new SigningCredentials(JwtUtils.GetSymmetricSecurityKey(_jwtSettings.SigningKey), SecurityAlgorithms.HmacSha256);
             var expiresAt = DateTime.UtcNow.AddDays(_jwtSettings.TokenValidityDays);
 
             var token = new JwtSecurityToken(

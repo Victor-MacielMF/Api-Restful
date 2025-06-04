@@ -74,7 +74,7 @@ namespace api.Services
             return new DataResponse<CommentDto>("Comment created successfully.", userComment.ToCommentDto());
         }
 
-        public async Task<DataResponse<CommentDto>> UpdateAsync(int id, UpdateCommentDto commentDto)
+        public async Task<DataResponse<CommentDto>> UpdateAsync(int id, UpdateCommentDto commentDto, string userId)
         {
             if (commentDto == null)
                 return new DataResponse<CommentDto>("Comment data is null.");
@@ -82,6 +82,8 @@ namespace api.Services
             Comment? existingComment = await _commentRepository.GetByIdAsync(id);
             if (existingComment == null)
                 return new DataResponse<CommentDto>($"Comment with ID {id} not found.");
+            if (existingComment.AccountId != userId)
+                return new DataResponse<CommentDto>("Only the comment owner can edit it.");
 
             Comment updatedComment = commentDto.ToCommentFromUpdateDTO(existingComment);
             if (updatedComment == null)
@@ -100,11 +102,13 @@ namespace api.Services
             return new DataResponse<CommentDto>("Comment updated successfully.", refreshedComment?.ToCommentDto());
         }
 
-        public async Task<DataResponse<CommentDto>> DeleteAsync(int id)
+        public async Task<DataResponse<CommentDto>> DeleteAsync(int id, string userId)
         {
             Comment? existingComment = await _commentRepository.GetByIdAsync(id);
             if (existingComment == null)
                 return new DataResponse<CommentDto>($"Comment with ID {id} not found.");
+            if (existingComment.AccountId != userId)
+                return new DataResponse<CommentDto>("Only the comment owner can delete it.");
 
             IdentityResult result = await _commentRepository.DeleteAsync(existingComment);
 
