@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -7,7 +8,7 @@
 namespace api.Migrations
 {
     /// <inheritdoc />
-    public partial class CommentOneToOne : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -224,7 +225,8 @@ namespace api.Migrations
                         name: "FK_Comments_Stocks_StockId",
                         column: x => x.StockId,
                         principalTable: "Stocks",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.InsertData(
@@ -232,8 +234,8 @@ namespace api.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "1cd32f9f-1223-48da-8042-020f61ceb5df", null, "Admin", "ADMIN" },
-                    { "96dcd328-215c-44f8-aa84-419622d439b5", null, "User", "USER" }
+                    { "73c1f111-d4d5-4c2d-b73e-82f549591b53", null, "User", "USER" },
+                    { "97f2f5bb-7221-4b2b-b0d3-730167aa5064", null, "Admin", "ADMIN" }
                 });
 
             migrationBuilder.CreateIndex(
