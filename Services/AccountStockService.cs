@@ -34,7 +34,7 @@ namespace api.Services
 
         public async Task<DataResponse<StockDto>> AddAsync(string username, int stockId)
         {
-            Account? account = _accountRepository.GetByUsernameAsync(username).Result;
+            Account? account = await _accountRepository.GetByUsernameAsync(username);
             if (account == null)
                 return new DataResponse<StockDto>("Account not found.");
 
