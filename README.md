@@ -127,9 +127,8 @@ Use o botão **Authorize** para inserir seu token JWT e testar endpoints protegi
 - ✅ Filtro de tempo de execução via `ExecutionTimeFilter`
 - ✅ Respostas padronizadas com `DataResponse<T>`
 - ✅ Swagger com autenticação configurada
-- ✅ Versionamento da API via `api/v2`
 
 ## 🤝 Contato
 
-📧 **victormacielmf@gmail.com**  
+📧 **joaovictormacieldefreitas@gmail.com**  
 🔗 [linkedin.com/in/victormacielmf](https://www.linkedin.com/in/joao-victor-maciel-de-freitas/)
