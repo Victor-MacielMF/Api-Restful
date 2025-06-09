@@ -1,5 +1,6 @@
 using api.Dtos;
 using api.Dtos.Stock;
+using api.Helpers;
 using api.Interfaces.Repositories;
 using api.Interfaces.Services;
 using api.Mappers;
@@ -20,13 +21,13 @@ namespace api.Services
             _accountStockRepository = accountStockRepository;
         }
 
-        public async Task<DataResponse<List<StockDto>>> GetAllAsync(string username)
+        public async Task<DataResponse<List<StockDto>>> GetAllAsync(string username, QueryParameters queryObject)
         {
             Account? account = await _accountRepository.GetByUsernameAsync(username);
             if (account == null)
                 return new DataResponse<List<StockDto>>("Account not found.");
 
-            List<Stock> stocks = await _accountStockRepository.GetAllByAccountAsync(account);
+            List<Stock> stocks = await _accountStockRepository.GetAllByAccountAsync(account, queryObject);
             List<StockDto> stockDtos = stocks.Select(s => s.TostockDto(account.Id)).ToList();
 
             return new DataResponse<List<StockDto>>("Stocks retrieved successfully.", stockDtos);

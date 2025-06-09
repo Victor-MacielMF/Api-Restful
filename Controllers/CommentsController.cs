@@ -2,6 +2,7 @@ using System.Security.Claims;
 using api.Dtos;
 using api.Dtos.Comment;
 using api.Extensions;
+using api.Helpers;
 using api.Interfaces.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -25,9 +26,9 @@ namespace api.Controllers
         [ProducesResponseType(typeof(DataResponse<IEnumerable<CommentDto>>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(DataResponse<string>), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(DataResponse<string>), StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll([FromQuery] QueryParameters queryObject)
         {
-            DataResponse<IEnumerable<CommentDto>> response = await _commentService.GetAllAsync();
+            DataResponse<IEnumerable<CommentDto>> response = await _commentService.GetAllAsync(queryObject);
 
             if (response.Errors != null)
             {

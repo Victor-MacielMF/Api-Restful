@@ -18,3 +18,5 @@ out/
 
 # Others
 .env
+
+.fake
