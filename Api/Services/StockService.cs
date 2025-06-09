@@ -74,6 +74,10 @@ namespace api.Services
 
         public async Task<DataResponse<StockWithoutCommentsDTO>> CreateAsync(CreateStockRequestDto createStockDto)
         {
+
+            if (createStockDto == null)
+                return new DataResponse<StockWithoutCommentsDTO>("Stock data is null.");
+
             Stock? stock = createStockDto.ToStockFromCreateDTO();
             if (stock == null)
             {
@@ -122,7 +126,8 @@ namespace api.Services
 
             if (!result.Succeeded)
                 return new DataResponse<StockWithoutCommentsDTO>(
-                    result.Errors.FirstOrDefault()?.Description ?? "Failed to delete stock."
+                    "Failed to delete stock.",
+                    result.Errors.Select(e => e.Description)
                 );
 
             // Agora você pode retornar informações do stock deletado
