@@ -3,14 +3,14 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
 # Copia os arquivos de projeto
-COPY Api/*.csproj ./Api/
-COPY Api.Tests/*.csproj ./Api.Tests/
+COPY ../Api/*.csproj ./Api/
+COPY ../Api.Tests/*.csproj ./Api.Tests/
 
 # Restaura as dependências
 RUN dotnet restore ./Api/Api.csproj
 
 # Copia todo o conteúdo da solução
-COPY . .
+COPY ../ ./
 
 # Publica a aplicação em modo Release
 RUN dotnet publish ./Api/Api.csproj -c Release -o /app/publish
