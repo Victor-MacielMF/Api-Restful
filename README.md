@@ -9,7 +9,7 @@ Se desejar, você pode consultar o histórico do repositório e visualizar como 
 ## 🚀 Tecnologias Utilizadas
 
 - .NET 8 (ASP.NET Core Web API)
-- Entity Framework Core (Migrations + SQL Server)
+- Entity Framework Core (Migrations + MySQL via Pomelo)
 - ASP.NET Identity (controle de usuários e papéis)
 - JWT (JSON Web Token) para autenticação
 - AutoMapper
@@ -50,7 +50,7 @@ Se desejar, você pode consultar o histórico do repositório e visualizar como 
 ### ✅ Pré-requisitos
 
 - .NET 8 SDK (https://dotnet.microsoft.com/en-us/download)
-- SQL Server local instalado (ou via Docker)
+- MySQL disponível (pode ser um host gratuito como freesqldatabase.com)
 - Visual Studio 2022 ou Visual Studio Code
 - Postman ou navegador para testar via Swagger
 
