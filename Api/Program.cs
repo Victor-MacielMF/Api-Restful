@@ -164,11 +164,9 @@ var app = builder.Build();
 app.UseMiddleware<ErrorHandlerMiddleware>();
 
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+
+app.UseSwagger();
+app.UseSwaggerUI();
 
 // app.MapHealthChecks("/health"); // Para endpoints de healthcheck
 
